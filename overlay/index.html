@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>English with Joy</title>
+<meta name="description" content="Interactive worksheets and smart-board games for young learners of English.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 84'%3E%3Ccircle cx='42' cy='42' r='38' fill='%23ffcb3d' stroke='%232b2340' stroke-width='5'/%3E%3Ccircle cx='30' cy='36' r='5' fill='%232b2340'/%3E%3Ccircle cx='54' cy='36' r='5' fill='%232b2340'/%3E%3Cpath d='M28 52 Q42 66 56 52' fill='none' stroke='%232b2340' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=DM+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{max-width:1320px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px));position:relative}
+header{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo{width:84px;height:84px;flex:none}
+header h1{margin:0;line-height:1}
+header p{margin:6px 0 0}
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:0;margin:30px 0 8px;overflow:hidden}
+.hero .pic{position:relative;min-height:300px}
+.hero .pic img{width:100%;height:100%;object-fit:cover}
+.hero .txt{padding:30px 32px;display:flex;flex-direction:column;gap:14px;justify-content:center;min-width:0}
+.hero h2{margin:0;line-height:1.05;text-wrap:balance}
+.hero p{margin:0;line-height:1.45}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{white-space:nowrap}
+.tabs{display:flex;gap:14px;margin:34px 0 22px;flex-wrap:wrap}
+.tab{display:flex;align-items:center;gap:12px;cursor:pointer}
+.tab svg{width:34px;height:34px}
+section{display:none}section.on{display:block}
+.sec-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 18px}
+.sec-h h2{margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:24px}
+.card{display:flex;flex-direction:column;overflow:hidden;position:relative}
+.thumb{height:170px;display:flex;align-items:center;justify-content:center;position:relative}
+.thumb svg{height:128px;width:auto}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.new{position:absolute;right:14px;top:14px;z-index:2}
+.info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.info h3{margin:0}
+.info p{margin:0;line-height:1.38;flex:1}
+.btns{display:grid;grid-template-columns:1fr auto;gap:10px}.btns .b:only-child{grid-column:1/-1}
+.b{min-width:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:56px;padding:0 12px;white-space:nowrap;text-decoration:none}
+.b svg{width:22px;height:22px;flex:none}
+.play-big{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;text-decoration:none}
+.play-big svg{width:26px;height:26px}
+footer{margin-top:48px;text-align:center}
+@media (max-width:820px){.hero{grid-template-columns:1fr}.hero .pic{min-height:200px}}
+
+:root{--bg:#fff6df;--ink:#1f1a2e;--muted:#5d5670;--pink:#ff4f87;--yel:#ffd23f;--blue:#38bdf8;--green:#4ade80;--lila:#a78bfa}
+body{background-color:var(--bg);background-image:radial-gradient(rgba(31,26,46,.13) 1.4px,transparent 1.5px);background-size:22px 22px;color:var(--ink);font-family:"DM Sans","Trebuchet MS",sans-serif;min-height:100vh}
+h1,h2,h3,.tab,.b,.play-big,.new,.badge{font-family:"Lilita One",Fredoka,sans-serif;font-weight:400;letter-spacing:.3px}
+header h1{font-size:clamp(42px,5.4vw,66px)}header h1 span{color:var(--pink);-webkit-text-stroke:0}
+header p{font-size:19px;color:var(--muted);font-weight:500}
+.hero{text-decoration:none;color:inherit;background:#fff;border:4px solid var(--ink);border-radius:26px;box-shadow:10px 10px 0 var(--ink);transition:transform .15s,box-shadow .15s}
+.hero:hover{transform:translate(-2px,-2px);box-shadow:12px 12px 0 var(--ink)}
+.hero .pic{border-right:4px solid var(--ink)}
+.badge{position:absolute;left:16px;top:16px;background:var(--yel);border:3px solid var(--ink);font-size:22px;padding:6px 14px;border-radius:14px;transform:rotate(-4deg);box-shadow:4px 4px 0 var(--ink)}
+.hero .txt{background:linear-gradient(#fff,#fff) padding-box}
+.hero h2{font-size:clamp(40px,4.6vw,62px)}
+.hero p{font-size:18.5px;color:var(--muted)}
+.chips span{border:3px solid var(--ink);border-radius:12px;padding:4px 11px;font-weight:700;font-size:15px;background:#fff}
+.chips span:nth-child(5n+1){background:#ffe0ea}.chips span:nth-child(5n+2){background:#fff2b8}.chips span:nth-child(5n+3){background:#d8f3ff}.chips span:nth-child(5n+4){background:#dcfce7}.chips span:nth-child(5n){background:#ede7ff}
+.play-big{background:var(--pink);color:#fff;font-size:26px;padding:12px 24px;border:4px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink)}
+.tab{height:70px;padding:0 26px;border-radius:18px;border:4px solid var(--ink);background:#fff;color:var(--ink);font-size:30px;box-shadow:5px 5px 0 var(--ink)}
+.tab small{font-family:"DM Sans",sans-serif;font-size:16px;color:var(--muted);font-weight:600}
+.tab.on{background:var(--lila);color:#fff}.tab.on small{color:#f3eeff}
+.tab:active,.b:active,.play-big:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.pill{background:var(--ink);color:var(--yel);font-family:"Lilita One",sans-serif;font-size:18px;border-radius:10px;padding:4px 12px;transform:rotate(-3deg)}
+.sec-h h2{font-size:32px}
+.card{background:#fff;border:4px solid var(--ink);border-radius:22px;box-shadow:7px 7px 0 var(--ink);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translate(-2px,-2px) rotate(-.4deg);box-shadow:9px 9px 0 var(--ink)}
+.thumb{background:var(--tb);border-bottom:4px solid var(--ink)}
+.new{background:var(--pink);color:#fff;border:3px solid var(--ink);font-size:17px;border-radius:12px;padding:3px 10px;transform:rotate(7deg);box-shadow:3px 3px 0 var(--ink)}
+.info h3{font-size:28px}
+.info p{font-size:16.5px;color:var(--muted)}
+.b{border:3px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);font-size:20px;box-shadow:4px 4px 0 var(--ink)}
+.b.main{background:var(--green)}
+.b:not(.main){padding:0 18px}
+.card{container-type:inline-size}
+@container (max-width:330px){.b{font-size:18px;gap:6px;padding:0 8px}.b:not(.main){padding:0 12px}.b svg{width:18px;height:18px}.btns .b:only-child{font-size:22px}}
+.c1 .b.main{background:var(--blue)}.c2 .b.main{background:var(--yel)}.c3 .b.main{background:#ff9f6b}.c4 .b.main{background:var(--lila);color:#fff}
+footer{color:var(--muted);font-weight:600}
+@media (max-width:820px){.hero .pic{border-right:0;border-bottom:4px solid var(--ink)}}
+
+</style>
+</head>
+<body class="t-sticker">
+
+<div class="wrap">
+  <header>
+    <svg class="logo" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" fill="#ffcb3d" stroke="#2b2340" stroke-width="4"/><circle cx="30" cy="36" r="5" fill="#2b2340"/><circle cx="54" cy="36" r="5" fill="#2b2340"/><circle cx="22" cy="50" r="6" fill="#ff9fb4"/><circle cx="62" cy="50" r="6" fill="#ff9fb4"/><path d="M28 52 Q42 66 56 52" fill="none" stroke="#2b2340" stroke-width="4.5" stroke-linecap="round"/></svg>
+    <div><h1>English <span>with</span> Joy</h1><p>Interactive worksheets and smart-board games</p></div>
+  </header>
+
+  <a class="hero" href="games/cans-birthday/" aria-label="Play Can's Birthday">
+    <div class="pic"><img src="games/cans-birthday/poster.jpg" alt="Can's birthday party in the classroom, from the game's 3D story"><span class="badge">New story game</span></div>
+    <div class="txt">
+      <h2>Can’s Birthday</h2>
+      <p>A 3D story in ten scenes. Follow Can from home to his birthday party and answer the questions inside the story.</p>
+      <div class="chips"><span>Months</span><span>Birthdays &amp; ages</span><span>Colours</span><span>People at school</span><span>11 to 20</span></div>
+      <span class="play-big"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play the story</span>
+    </div>
+  </a>
+
+  <nav class="tabs">
+    <button class="tab on" data-t="worksheets"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v4h4M9 11h6M9 14h6M9 17h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Worksheets</button>
+    <button class="tab" data-t="games"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 10.5v4M5 12.5h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="11" r="1.4" fill="currentColor"/><circle cx="18.5" cy="14" r="1.4" fill="currentColor"/></svg>Games</button>
+  </nav>
+
+  <section id="worksheets" class="on">
+    <div class="sec-h"><span class="pill">Grade 3</span><h2>Theme 1: School Life</h2></div>
+    <div class="grid">
+      <article class="card c0">
+        <div class="thumb" style="--tb:#e6f6ee"><span class="new">NEW</span><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3"><circle cx="96" cy="58" r="15" fill="#fff"/><circle cx="72" cy="52" r="15" fill="#fff"/><circle cx="48" cy="58" r="15" fill="#fff"/><circle cx="24" cy="50" r="17" fill="#ffcb3d"/><path d="M18 34 Q14 22 8 22 M30 34 Q34 22 40 20" fill="none" stroke-linecap="round"/></g><circle cx="18" cy="48" r="2.6" fill="#2b2340"/><circle cx="30" cy="48" r="2.6" fill="#2b2340"/><path d="M18 56 Q24 62 30 56" fill="none" stroke="#2b2340" stroke-width="2.6" stroke-linecap="round"/><g font-family="Fredoka,sans-serif" font-weight="700" font-size="14" fill="#2b2340" text-anchor="middle"><text x="48" y="63">11</text><text x="72" y="57">12</text><text x="96" y="63">13</text></g></svg></div>
+        <div class="info"><h3>How Many?</h3><p>Numbers 11–20, count the girls, boys and balloons at Can’s birthday party, then count and colour.</p>
+          <div class="btns"><a class="b main" href="how-many/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Smart board</a><a class="b" href="how-many/print.html?pdf=1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a></div></div>
+      </article>
+      <article class="card c1">
+        <div class="thumb" style="--tb:#e3eefb"><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3" stroke-linejoin="round"><rect x="10" y="40" width="100" height="56" rx="4" fill="#fff"/><path d="M4 42 L60 8 L116 42" fill="#f2547d"/><rect x="50" y="62" width="20" height="34" fill="#ffcb3d"/><rect x="20" y="52" width="20" height="16" fill="#5aa9e6"/><rect x="80" y="52" width="20" height="16" fill="#5aa9e6"/></g><circle cx="60" cy="30" r="7" fill="#fff" stroke="#2b2340" stroke-width="3"/></svg></div>
+        <div class="info"><h3>People at School</h3><p>Caretaker, librarian, school nurse, headteacher… Drag, guess the shadows and find the lost things.</p>
+          <div class="btns"><a class="b main" href="people-at-school/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Smart board</a><a class="b" href="people-at-school/print.html?pdf=1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a></div></div>
+      </article>
+      <article class="card c2">
+        <div class="thumb" style="--tb:#fff3c4"><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3" stroke-linejoin="round"><rect x="14" y="18" width="92" height="74" rx="8" fill="#fff"/><path d="M14 40h92" /><path d="M36 10v16M84 10v16" stroke-linecap="round"/></g><rect x="17" y="21" width="86" height="17" fill="#f2547d"/><g fill="#2b2340"><circle cx="34" cy="54" r="5"/><circle cx="52" cy="54" r="5"/><circle cx="70" cy="54" r="5"/><circle cx="88" cy="54" r="5"/><circle cx="34" cy="74" r="5"/><circle cx="52" cy="74" r="5"/></g><circle cx="70" cy="74" r="8" fill="#ffcb3d" stroke="#2b2340" stroke-width="3"/></svg></div>
+        <div class="info"><h3>Months of the Year</h3><p>The month train, join the dots, mixed-up letters and “What month is it now?”</p>
+          <div class="btns"><a class="b main" href="months/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Smart board</a><a class="b" href="months/print.html?pdf=1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a></div></div>
+      </article>
+      <article class="card c3">
+        <div class="thumb" style="--tb:#fde6ec"><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3" stroke-linejoin="round"><rect x="16" y="52" width="88" height="40" rx="8" fill="#ffd6e4"/><path d="M16 62 q11 10 22 0 q11 10 22 0 q11 10 22 0 q11 10 22 0" fill="#fff"/><rect x="34" y="30" width="7" height="22" fill="#5aa9e6"/><rect x="57" y="30" width="7" height="22" fill="#ffcb3d"/><rect x="80" y="30" width="7" height="22" fill="#2fb36d"/></g><g fill="#ffb020" stroke="#2b2340" stroke-width="2"><path d="M37.5 14c4 5 4 9 0 12-4-3-4-7 0-12z"/><path d="M60.5 14c4 5 4 9 0 12-4-3-4-7 0-12z"/><path d="M83.5 14c4 5 4 9 0 12-4-3-4-7 0-12z"/></g></svg></div>
+        <div class="info"><h3>Birthdays &amp; Ages</h3><p>Read and answer, count the candles, draw the candles and make a party invitation.</p>
+          <div class="btns"><a class="b main" href="birthdays/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Smart board</a><a class="b" href="birthdays/print.html?pdf=1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a></div></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="games">
+    <div class="sec-h"><span class="pill">Grade 3</span><h2>Smart-board games</h2></div>
+    <div class="grid">
+      <article class="card c2">
+        <div class="thumb" style="--tb:#fde6ec"><span class="new">NEW</span><img src="games/cans-birthday/poster.jpg" alt=""></div>
+        <div class="info"><h3>Can’s Birthday</h3><p>A 3D story game in ten scenes. Watch Can’s birthday and answer the questions inside the story: months, ages, colours and people at school.</p>
+          <div class="btns"><a class="b main" href="games/cans-birthday/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
+      </article>
+      <article class="card c3">
+        <div class="thumb" style="--tb:#eaf6ff"><span class="new">NEW</span><svg viewBox="0 0 120 100" aria-hidden="true"><path d="M0 84 H120" stroke="#e9dfcf" stroke-width="10"/><g stroke="#2b2340" stroke-width="3" stroke-linejoin="round"><path d="M28 50 L48 50 L52 76 L24 76 Z" fill="#8e5cf7"/><circle cx="38" cy="34" r="11" fill="#ffd9b8"/><path d="M26 25 Q38 10 50 25 Z" fill="#5aa9e6"/><rect x="62" y="48" width="18" height="24" rx="6" fill="#5aa9e6"/><circle cx="71" cy="38" r="9" fill="#ffd9b8"/><path d="M14 30 Q38 -2 62 30 Z" fill="#f2547d" opacity=".9"/><rect x="92" y="20" width="16" height="40" rx="5" fill="#2b2340"/></g><circle cx="100" cy="30" r="5" fill="#e5484d"/><circle cx="100" cy="50" r="5" fill="#2fb36d"/><path d="M38 77 V92 M46 77 V92 M68 72 V92 M74 72 V92" stroke="#2b2340" stroke-width="3" stroke-linecap="round"/></svg></div>
+        <div class="info"><h3>Off to School with Grandma</h3><p>A story game. Help Can and Grandma walk to school: answer one question at every step (classroom objects, weather, colours, time).</p>
+          <div class="btns"><a class="b main" href="games/off-to-school/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
+      </article>
+      <article class="card c4">
+        <div class="thumb" style="--tb:#e6f6ee"><span class="new">NEW</span><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3"><circle cx="22" cy="62" r="12" fill="#5aa9e6"/><circle cx="40" cy="62" r="12" fill="#ffcb3d"/><circle cx="58" cy="62" r="12" fill="#f2547d"/><circle cx="80" cy="54" r="18" fill="#6cc56a"/><path d="M74 37 Q70 26 64 26 M86 37 Q90 26 96 26" fill="none" stroke-linecap="round"/><path d="M104 40 C96 36 96 28 103 25 C110 28 110 36 104 40 Z" fill="#e5484d"/></g><circle cx="75" cy="52" r="2.6" fill="#2b2340"/><circle cx="86" cy="52" r="2.6" fill="#2b2340"/><path d="M75 60 Q80 65 86 60" fill="none" stroke="#2b2340" stroke-width="2.6" stroke-linecap="round"/><path d="M0 80 H120" stroke="#6cc56a" stroke-width="6"/></svg></div>
+        <div class="info"><h3>Feed the Caterpillar</h3><p>The whole class counts together. Every right answer to “How many…?” is an apple, until the caterpillar becomes a butterfly.</p>
+          <div class="btns"><a class="b main" href="games/feed-the-caterpillar/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
+      </article>
+      <article class="card c0">
+        <div class="thumb" style="--tb:linear-gradient(90deg,#e3eeff 50%,#ffeddc 50%)"><span class="new">NEW</span><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3"><path d="M30 70 Q26 82 32 94 M90 70 Q94 82 88 94" fill="none" stroke-width="2"/><ellipse cx="30" cy="40" rx="22" ry="28" fill="#3b82f6"/><ellipse cx="90" cy="40" rx="22" ry="28" fill="#f97316"/></g><g font-family="Fredoka,sans-serif" font-weight="700" font-size="22" fill="#fff" text-anchor="middle"><text x="30" y="48">17</text><text x="90" y="48">7</text></g></svg></div>
+        <div class="info"><h3>Number Pop Race</h3><p>Two players listen to a number (seven or seventeen?) and race to pop the right balloon.</p>
+          <div class="btns"><a class="b main" href="games/number-pop/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
+      </article>
+      <article class="card c1">
+        <div class="thumb" style="--tb:linear-gradient(90deg,#e3eeff 50%,#ffeddc 50%)"><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3" stroke-linejoin="round"><rect x="6" y="24" width="38" height="52" rx="8" fill="#3b82f6"/><rect x="76" y="24" width="38" height="52" rx="8" fill="#f97316"/><path d="M60 18 l5 11 12 1-9 8 3 12-11-7-11 7 3-12-9-8 12-1z" fill="#ffcb3d"/></g><text x="25" y="58" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="700" font-size="20" fill="#fff">1</text><text x="95" y="58" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="700" font-size="20" fill="#fff">2</text><text x="60" y="88" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="700" font-size="14" fill="#2b2340">VS</text></svg></div>
+        <div class="info"><h3>School Race</h3><p>Two players, one tap. Who is the caretaker? Whose keys are these? First to tap the right answer wins the star.</p>
+          <div class="btns"><a class="b main" href="games/school-race/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
+      </article>
+      <article class="card c2">
+        <div class="thumb" style="--tb:#fff3c4"><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3" stroke-linejoin="round" fill="#fff"><rect x="8" y="34" width="30" height="24" rx="4"/><rect x="45" y="34" width="30" height="24" rx="4"/><rect x="82" y="34" width="30" height="24" rx="4" fill="#ffcb3d"/><circle cx="16" cy="64" r="5"/><circle cx="30" cy="64" r="5"/><circle cx="53" cy="64" r="5"/><circle cx="67" cy="64" r="5"/><circle cx="90" cy="64" r="5"/><circle cx="104" cy="64" r="5"/></g><text x="97" y="52" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="700" font-size="16" fill="#2b2340">?</text></svg></div>
+        <div class="info"><h3>Missing Month</h3><p>Which month is missing? Tap it first.</p>
+          <div class="btns"><a class="b main" href="https://missing-month.vercel.app"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
+      </article>
+      <article class="card c3">
+        <div class="thumb" style="--tb:#e6f6ee"><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3" stroke-linejoin="round"><rect x="8" y="20" width="48" height="16" rx="6" fill="#5aa9e6"/><rect x="8" y="42" width="48" height="16" rx="6" fill="#6cc56a"/><rect x="8" y="64" width="48" height="16" rx="6" fill="#ffcb3d"/><rect x="64" y="20" width="48" height="16" rx="6" fill="#ff8a4c"/><rect x="64" y="42" width="48" height="16" rx="6" fill="#5aa9e6"/><rect x="64" y="64" width="48" height="16" rx="6" fill="#6cc56a"/></g></svg></div>
+        <div class="info"><h3>Months Race</h3><p>Two players put the months in order. Who is faster?</p>
+          <div class="btns"><a class="b main" href="https://months-race.vercel.app"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
+      </article>
+      <article class="card c4">
+        <div class="thumb" style="--tb:#fde6ec"><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3"><path d="M30 60 Q24 80 34 96M60 52 Q66 78 58 96M90 60 Q96 80 86 96" fill="none" stroke-width="2"/><ellipse cx="30" cy="36" rx="18" ry="22" fill="#f2547d"/><ellipse cx="60" cy="28" rx="18" ry="22" fill="#5aa9e6"/><ellipse cx="90" cy="36" rx="18" ry="22" fill="#ffcb3d"/></g></svg></div>
+        <div class="info"><h3>Birthday Balloon Pop</h3><p>Listen to the birthday and pop the right month balloon.</p>
+          <div class="btns"><a class="b main" href="https://birthday-balloon-pop.vercel.app"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
+      </article>
+    </div>
+  </section>
+
+  <footer>English with Joy · made for 3rd graders</footer>
+</div>
+<script>
+const tabs = document.querySelectorAll(".tab");
+function pick(t){ tabs.forEach(b=>b.classList.toggle("on", b.dataset.t === t)); document.querySelectorAll("section").forEach(s=>s.classList.toggle("on", s.id === t)); }
+tabs.forEach(b=>b.addEventListener("click", ()=>{ pick(b.dataset.t); history.replaceState(null, "", b.dataset.t === "games" ? "#games" : "#"); }));
+if (location.hash === "#games") pick("games");
+</script>
+</body>
+</html>

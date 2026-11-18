@@ -1,0 +1,32 @@
+{
+  "buildCommand": "node build.mjs",
+  "outputDirectory": "dist",
+  "installCommand": "",
+  "framework": null,
+  "trailingSlash": true,
+  "rewrites": [
+    {
+      "source": "/how-many/class.png",
+      "destination": "https://drive.usercontent.google.com/download?id=1O3cMJ5DsOKeKmgN-_UoGewAH1vTWPVSW&export=download"
+    },
+    {
+      "source": "/people-at-school/sheet.js",
+      "destination": "https://drive.usercontent.google.com/download?id=1c0NOkrOLP4vSe0NVu-8wTObXrRzDn6J9&export=download&confirm=t"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/people-at-school/sheet.js",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/javascript; charset=utf-8"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "inline"
+        }
+      ]
+    }
+  ]
+}
