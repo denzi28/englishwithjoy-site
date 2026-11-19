@@ -80,18 +80,18 @@ function buildSprites() {
 }
 
 /* ---------- world ---------- */
-const GP = [[-10, 2.2], [6, 2.2], [16.5, 4.6], [22, 4.4], [31, 2.1], [35.5, 1.8], [39.5, 1.6], [400, 1.6]];
+const GP = [[-10, 2.2], [4.2, 2.2], [11.6, 4.3], [15.4, 4.1], [21.7, 2.1], [24.9, 1.8], [27.7, 1.6], [400, 1.6]];
 function groundY(x) { let i = 0; while (i < GP.length - 2 && x > GP[i + 1][0]) i++; const [x0, y0] = GP[i], [x1, y1] = GP[i + 1], t = cl((x - x0) / (x1 - x0));
   return lerp(y0, y1, .5 - .5 * Math.cos(Math.PI * t)) + (x < 37 ? noise1(x * .5, 2) * .1 : 0); }
-const INSIDE = 40, BOARDX = 76;
+const INSIDE = 28, BOARDX = 55;
 let BW = 6, BH = 3.4, BY = 3.4;   // board size in units, matched to the screen's aspect
 const FAR = [], MID = [], NEAR = [], FG = [];
-for (let x = -4; x < 100; x += 4 + rnd() * 5) FAR.push({ x, k: (rnd() * 3) | 0, y: rnd() * 1.5 });
-for (let x = 2; x < 37; x += 4.5 + rnd() * 5) MID.push({ x, t: rnd() < .35 ? 'arch' : 'stem', s: .8 + rnd() * .4 });
-for (let x = 3; x < 37; x += 1.8 + rnd() * 2.6) NEAR.push({ x, t: rnd() < .55 ? 'bush' : 'sprout', k: (rnd() * 3) | 0, s: .7 + rnd() * .5 });
-for (let x = 6; x < 36; x += 6 + rnd() * 6) FG.push({ x, k: (rnd() * 3) | 0 });
-const BLOCKS = [5, 10, 14.5, 19.5, 25, 30].map((x, i) => ({ x, y: groundY(x) + 2.4 + rnd() * 1.2, k: i, ph: rnd() * 6 }));
-const DESKS = [46, 53, 60, 67].map((x, i) => ({ x, k: i % 5 }));
+for (let x = -4; x < 80; x += 4 + rnd() * 5) FAR.push({ x, k: (rnd() * 3) | 0, y: rnd() * 1.5 });
+for (let x = 2; x < 26; x += 4.5 + rnd() * 5) MID.push({ x, t: rnd() < .35 ? 'arch' : 'stem', s: .8 + rnd() * .4 });
+for (let x = 3; x < 26; x += 1.8 + rnd() * 2.6) NEAR.push({ x, t: rnd() < .55 ? 'bush' : 'sprout', k: (rnd() * 3) | 0, s: .7 + rnd() * .5 });
+for (let x = 5; x < 25; x += 6 + rnd() * 6) FG.push({ x, k: (rnd() * 3) | 0 });
+const BLOCKS = [3.5, 7, 10.2, 13.7, 17.5, 21].map((x, i) => ({ x, y: groundY(x) + 2.4 + rnd() * 1.2, k: i, ph: rnd() * 6 }));
+const DESKS = [34, 40.5, 47].map((x, i) => ({ x, k: i % 5 }));
 
 /* ---------- sizing ---------- */
 let W = 0, H = 0, DPR = 1;
@@ -142,7 +142,7 @@ function paint(P, t) {
     g.save(); g.beginPath(); g.rect(x0, 0, w - x0 + 9999, h); g.clip();
     grd = g.createLinearGradient(0, 0, 0, h); grd.addColorStop(0, '#f6e7d6'); grd.addColorStop(1, '#efd6c4'); g.fillStyle = grd; g.fillRect(x0, 0, w - x0, h);
     g.globalAlpha = .35; g.fillStyle = strokePat; g.fillRect(x0, 0, w - x0, h); g.globalAlpha = 1;
-    for (const wx of [44, 52, 60, 68]) { const x = sx(wx); if (x > -u * 4 && x < w + u) { g.drawImage(S.window, x - S.window.width / 2, sy(7.6));
+    for (const wx of [32, 40, 48]) { const x = sx(wx); if (x > -u * 4 && x < w + u) { g.drawImage(S.window, x - S.window.width / 2, sy(7.6));
       const lg = g.createLinearGradient(x, sy(7), x + u * 3, sy(1.6)); lg.addColorStop(0, 'rgba(255,240,230,.55)'); lg.addColorStop(1, 'rgba(255,240,230,0)'); g.fillStyle = lg;
       g.beginPath(); g.moveTo(x - u * 1.2, sy(7.2)); g.lineTo(x + u * 1.2, sy(7.2)); g.lineTo(x + u * 3.6, sy(1.6)); g.lineTo(x + u * .6, sy(1.6)); g.fill(); } }
     for (let i = 0; i < 40; i++) { const wx = INSIDE + i * .9, x = sx(wx); if (x < -u || x > w + u) continue; const sag = Math.sin((i % 12) / 11 * Math.PI) * .35; g.drawImage(S.flag[i % 5], x, sy(8.9 - sag)); }
@@ -218,7 +218,7 @@ function board3d(P, r) {
 }
 
 /* ---------- the intro plays by itself ---------- */
-const TL = [[0, 0], [.9, 0], [8.9, .78], [10.5, .84], [12.8, 1]];   // seconds -> story progress
+const TL = [[0, 0], [.5, 0], [6.1, .78], [7.4, .84], [9, 1]];   // seconds -> story progress
 const runEase = k => k < .1 ? k * k / .18 : k > .9 ? 1 - (1 - k) * (1 - k) / .18 : (k - .05) / .9;   // ease in, steady run, ease out
 function progress(sec) { for (let i = 0; i < TL.length - 1; i++) { const [a, pa] = TL[i], [b, pb] = TL[i + 1]; if (sec <= b) { let k = cl((sec - a) / (b - a)); if (i === 1) k = runEase(k); return lerp(pa, pb, cl(k)); } } return 1; }
 let last = performance.now(), clock = 0, ic = 0, pS = 0, playing = false, started = 0, rect = null, raf = 0;
