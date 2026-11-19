@@ -238,13 +238,14 @@ function frame(now) {
   requestAnimationFrame(frame);
   const dt = Math.min(.05, (now - last) / 1000); last = now; clock += dt;
   const r = run.getBoundingClientRect(), raw = cl(-r.top / Math.max(1, r.height - innerHeight));
-  pS = RM ? raw : pS + (raw - pS) * Math.min(1, dt * 7);
+  pS = (RM || raw >= .999) ? raw : pS + (raw - pS) * Math.min(1, dt * 7);
+  document.documentElement.classList.toggle('board-live', raw >= .999);
   if (!vis) return;
   rect = paint(pS, clock);
   board3d(pS, rect);
   CAPS.forEach(([a, b], i) => { const o = (i ? sm(a, a + .03, pS) : 1) * (1 - sm(b - .03, b, pS)); caps[i].style.opacity = o.toFixed(3); caps[i].style.transform = `translateY(${((1 - o) * 16).toFixed(1)}px)`; });
   $('#hint').style.opacity = (1 - sm(.005, .04, pS)).toFixed(2);
 }
-const start = () => { resize(); requestAnimationFrame(frame); };
+const start = () => { document.documentElement.classList.add('js-pin'); resize(); requestAnimationFrame(frame); };
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(start, start);
 window.__run = { get p() { return pS; } };

@@ -126,6 +126,10 @@ h1,h2,h3{font-family:var(--disp);font-variation-settings:"SOFT" 100;font-weight:
 footer{background:var(--ink);color:rgba(255,255,255,.7);padding:26px 0;font-size:15px}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
+
+/* the real board section sits under the last screen of the intro and takes over when the intro ends */
+.js-pin #board{margin-top:-100vh;margin-top:-100svh;position:relative;z-index:6;visibility:hidden}
+.js-pin.board-live #board{visibility:visible}
 @media (max-width:1100px){ .apps{grid-template-columns:repeat(3,minmax(0,1fr))} .links{display:none} .name{margin-right:auto} }
 @media (max-width:760px){ .bar .btn:not(#viewSwitch){display:none} #viewSwitch{height:42px;padding:0 12px;font-size:14px} }
 @media (max-width:900px){ .hint{display:none} }

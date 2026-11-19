@@ -2,7 +2,8 @@
 import * as THREE from './three.module.min.js';
 
 const $ = s => document.querySelector(s);
-const story = $('#story'), canvas = $('#scene');
+const story = $('#story'), canvas = $('#scene'), mirrorEl = $('#mirror');
+document.documentElement.classList.add('js-pin');
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const cl = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v;
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -343,7 +344,9 @@ function frame(now) {
   requestAnimationFrame(frame);
   const dt = Math.min(.05, (now - last) / 1000); last = now; clock += dt;
   const r = story.getBoundingClientRect(), raw = cl(-r.top / Math.max(1, r.height - innerHeight));
-  pS = RM ? raw : pS + (raw - pS) * Math.min(1, dt * 6);
+  pS = (RM || raw >= .999) ? raw : pS + (raw - pS) * Math.min(1, dt * 6);
+  document.documentElement.classList.toggle('board-live', raw >= .999);
+  mirrorEl.style.opacity = sm(.9, .97, pS).toFixed(3);
   const P = pS;
   if (!visible) return;
   // story beats

@@ -57,6 +57,7 @@ h1,h2,h3{font-family:var(--disp);font-variation-settings:"SOFT" 100;font-weight:
 #story{position:relative;height:820vh}
 .pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#cfe0ff}
 #scene{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
+.mirror{position:absolute;inset:0;z-index:4;opacity:0;pointer-events:none}
 .cover{position:absolute;inset:0;z-index:5;display:grid;place-items:center;background:#cfe0ff;transition:opacity .8s}
 .cover.gone{opacity:0;pointer-events:none}
 .cover span{font:600 22px var(--disp);font-variation-settings:"SOFT" 100;color:var(--ink-2)}
@@ -124,6 +125,10 @@ h1,h2,h3{font-family:var(--disp);font-variation-settings:"SOFT" 100;font-weight:
 footer{background:var(--ink);color:rgba(255,255,255,.7);padding:26px 0;font-size:15px}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
+
+/* the real board section sits under the last screen of the intro and takes over when the intro ends */
+.js-pin #board{margin-top:-100vh;margin-top:-100svh;position:relative;z-index:6;visibility:hidden}
+.js-pin.board-live #board{visibility:visible}
 @media (max-width:1100px){ .apps{grid-template-columns:repeat(3,minmax(0,1fr))} .links{display:none} .name{margin-right:auto} }
 @media (max-width:760px){ .bar .btn:not(#viewSwitch){display:none} #viewSwitch{height:42px;padding:0 12px;font-size:14px} }
 @media (max-width:900px){ .hint{display:none} }
@@ -176,6 +181,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         <div class="cap"><h2 data-i="c6.h">Şimdi tahtaya yakından bakalım.</h2><p data-i="c6.p">Tahtadaki her oyunu ben yaptım.</p></div>
       </div>
       <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="mirror board" id="mirror" aria-hidden="true" inert></div>
       <div class="hint" id="hint"><span data-i="hint">Aşağı kaydır</span><span class="chalk"></span></div>
     </div>
   </section>
@@ -303,8 +309,9 @@ function render(){
     <h3>${esc(p.title)}</h3><p>${esc(p[lang])}</p></a>`).join('');
 }
 document.getElementById('viewSwitch').addEventListener('click',()=>{try{localStorage.setItem('view','2d')}catch(e){}});
-document.getElementById('lang').addEventListener('click',()=>{lang=lang==='tr'?'en':'tr';try{localStorage.setItem('lang',lang)}catch(e){}render()});
-render();
+function mirror(){const s=document.getElementById('mirror');s.innerHTML='';const f=document.querySelector('#board .board-frame').cloneNode(true);f.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));s.appendChild(f)}
+document.getElementById('lang').addEventListener('click',()=>{lang=lang==='tr'?'en':'tr';try{localStorage.setItem('lang',lang)}catch(e){}render();mirror()});
+render();mirror();
 </script>
 <script type="module">
 const cover=document.getElementById('cover');
