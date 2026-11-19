@@ -1,7 +1,8 @@
 # Portfolio page (deniz-beryl.vercel.app)
 
 Source of the personal portfolio page. The `deniz` Vercel project builds it by
-downloading `index.html` from here and two public-domain images from Wikimedia Commons:
+downloading `index.html` and `js/class.js` from here and copying three.js from npm.
 
-- Alexandre Cabanel, *The Fallen Angel* (1847), Musée Fabre. Public domain.
-- "Clouds in blue sky", Wikimedia Commons. Public domain.
+The opening is a low-poly 3D classroom made with three.js: scroll and a short
+lesson plays, then the camera zooms into the smart board, which becomes the
+projects section.
