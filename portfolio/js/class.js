@@ -347,7 +347,7 @@ function frame(now) {
   const P = pS;
   if (!visible) return;
   // story beats
-  CAPS.forEach(([a, b], i) => { const o = sm(a, a + .025, P) * (1 - sm(b - .025, b, P)); caps[i].style.opacity = o.toFixed(3); caps[i].style.transform = `translateY(${((1 - o) * 18).toFixed(1)}px)`; dots[i] && dots[i].classList.toggle('on', P >= a && (i === CAPS.length - 1 || P < CAPS[i + 1][0])); });
+  CAPS.forEach(([a, b], i) => { const o = (i ? sm(a, a + .025, P) : 1) * (1 - sm(b - .025, b, P)); caps[i].style.opacity = o.toFixed(3); caps[i].style.transform = `translateY(${((1 - o) * 18).toFixed(1)}px)`; dots[i] && dots[i].classList.toggle('on', P >= a && (i === CAPS.length - 1 || P < CAPS[i + 1][0])); });
   $('#hint').style.opacity = (1 - sm(.01, .05, P)).toFixed(2);
   const S = { on: sm(.13, .19, P), ans: sm(.545, .565, P), timer: sm(.2, .54, P), launch: sm(.73, .82, P) };
   drawBoard(S, clock); btex.needsUpdate = true;

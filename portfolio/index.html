@@ -30,7 +30,7 @@ a{color:inherit}
 h1,h2,h3{font-family:var(--disp);font-variation-settings:"SOFT" 100;font-weight:600;letter-spacing:-.015em;margin:0}
 
 /* crayon buttons: chunky, press down when tapped, like a smart-board button */
-.btn{--c:var(--crayon);display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;border-radius:16px;border:2.5px solid var(--ink);
+.btn{--c:var(--crayon);white-space:nowrap;display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;border-radius:16px;border:2.5px solid var(--ink);
   background:var(--c);color:var(--ink);font:700 17px/1 var(--body);text-decoration:none;cursor:pointer;box-shadow:0 5px 0 var(--ink);
   transition:transform .12s,box-shadow .12s,filter .2s}
 .btn:hover{filter:brightness(1.04) saturate(1.05)}
@@ -48,7 +48,7 @@ h1,h2,h3{font-family:var(--disp);font-variation-settings:"SOFT" 100;font-weight:
 .face svg{width:26px;height:26px}
 .name b{font:700 20px/1 var(--disp);font-variation-settings:"SOFT" 100}
 .links{margin-left:auto;display:flex;gap:6px;padding:6px;border-radius:18px;background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:2px solid rgba(28,35,64,.12)}
-.links a{padding:9px 14px;border-radius:12px;text-decoration:none;font-weight:700;font-size:15px;color:var(--ink-2)}
+.links a{white-space:nowrap;padding:9px 14px;border-radius:12px;text-decoration:none;font-weight:700;font-size:15px;color:var(--ink-2)}
 .links a:hover{background:var(--paper-2);color:var(--ink)}
 .lang{height:42px;min-width:52px;border-radius:13px;border:2.5px solid var(--ink);background:#fff;font:700 14px/1 var(--body);color:var(--ink);cursor:pointer;box-shadow:0 4px 0 var(--ink)}
 .lang:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
@@ -124,7 +124,8 @@ h1,h2,h3{font-family:var(--disp);font-variation-settings:"SOFT" 100;font-weight:
 footer{background:var(--ink);color:rgba(255,255,255,.7);padding:26px 0;font-size:15px}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
-@media (max-width:1100px){ .apps{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:1100px){ .apps{grid-template-columns:repeat(3,minmax(0,1fr))} .links{display:none} .name{margin-right:auto} }
+@media (max-width:760px){ .bar .btn{display:none} }
 @media (max-width:900px){
   .new-grid,.about-grid{grid-template-columns:1fr;gap:48px}
   .apps{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
@@ -303,7 +304,7 @@ render();
 </script>
 <script type="module">
 const cover=document.getElementById('cover');
-import('./js/class.js').then(()=>requestAnimationFrame(()=>requestAnimationFrame(()=>cover.classList.add('gone'))))
+import('./js/class.js').then(()=>setTimeout(()=>cover.classList.add('gone'),350))
   .catch(()=>{cover.classList.add('gone');document.getElementById('story').style.height='auto';document.querySelector('.pin').style.height='60vh'});
 </script>
 <script nomodule>document.getElementById('cover').classList.add('gone')</script>
