@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deniz · Sınıf için oyunlar</title>
+<meta name="description" content="Deniz'in akıllı tahta oyunları, sınıf araçları ve projeleri. Aşağı kaydır, ders başlasın.">
+<meta property="og:title" content="Deniz · Sınıf için oyunlar">
+<meta property="og:description" content="Akıllı tahta oyunları, sınıf araçları ve projeler.">
+<meta property="og:image" content="img/english-with-joy.webp">
+<meta name="theme-color" content="#cfe0ff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23ffc23d'/%3E%3Ccircle cx='24' cy='28' r='5' fill='%231c2340'/%3E%3Ccircle cx='40' cy='28' r='5' fill='%231c2340'/%3E%3Cpath d='M20 40q12 10 24 0' stroke='%231c2340' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..800,100&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f3f6ff; --paper-2:#e6edff; --ink:#1c2340; --ink-2:#3d4566; --soft:#6b7394; --line:#cdd6f2;
+  --crayon:#ffc23d; --berry:#ff5d8f; --mint:#3ccb9a; --sky:#7cc4ff; --grape:#b28cff;
+  --slate:#1b2340; --bezel:#262c3b;
+  --disp:"Fraunces",Georgia,serif; --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 18px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--berry);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+h1,h2,h3{font-family:var(--disp);font-variation-settings:"SOFT" 100;font-weight:600;letter-spacing:-.015em;margin:0}
+
+/* crayon buttons: chunky, press down when tapped, like a smart-board button */
+.btn{--c:var(--crayon);white-space:nowrap;display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;border-radius:16px;border:2.5px solid var(--ink);
+  background:var(--c);color:var(--ink);font:700 17px/1 var(--body);text-decoration:none;cursor:pointer;box-shadow:0 5px 0 var(--ink);
+  transition:transform .12s,box-shadow .12s,filter .2s}
+.btn:hover{filter:brightness(1.04) saturate(1.05)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.btn.small{height:42px;padding:0 16px;border-radius:13px;font-size:15px;box-shadow:0 4px 0 var(--ink)}
+.btn.small:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn.ghost{--c:#fff}
+.btn.mint{--c:var(--mint)} .btn.berry{--c:var(--berry);color:#fff} .btn.sky{--c:var(--sky)}
+
+/* top bar */
+.bar{position:fixed;top:16px;left:16px;right:16px;z-index:40;display:flex;align-items:center;gap:12px;pointer-events:none}
+.bar>*{pointer-events:auto}
+.name{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px 0 8px;border-radius:18px;background:#fff;border:2.5px solid var(--ink);box-shadow:0 5px 0 var(--ink);text-decoration:none}
+.face{width:36px;height:36px;border-radius:12px;background:var(--crayon);display:grid;place-items:center}
+.face svg{width:26px;height:26px}
+.name b{font:700 20px/1 var(--disp);font-variation-settings:"SOFT" 100}
+.links{margin-left:auto;display:flex;gap:6px;padding:6px;border-radius:18px;background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:2px solid rgba(28,35,64,.12)}
+.links a{white-space:nowrap;padding:9px 14px;border-radius:12px;text-decoration:none;font-weight:700;font-size:15px;color:var(--ink-2)}
+.links a:hover{background:var(--paper-2);color:var(--ink)}
+.lang{height:42px;min-width:52px;border-radius:13px;border:2.5px solid var(--ink);background:#fff;font:700 14px/1 var(--body);color:var(--ink);cursor:pointer;box-shadow:0 4px 0 var(--ink)}
+.lang:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+
+/* the classroom story */
+#story{position:relative;height:820vh}
+.pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#cfe0ff}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
+.cover{position:absolute;inset:0;z-index:5;display:grid;place-items:center;background:#cfe0ff;transition:opacity .8s}
+.cover.gone{opacity:0;pointer-events:none}
+.cover span{font:600 22px var(--disp);font-variation-settings:"SOFT" 100;color:var(--ink-2)}
+.pin::after{content:"";position:absolute;left:0;bottom:0;width:min(900px,100%);height:min(520px,70%);z-index:2;pointer-events:none;
+  background:radial-gradient(80% 80% at 0% 100%,rgba(243,246,255,.92),rgba(243,246,255,.55) 45%,rgba(243,246,255,0) 75%)}
+.caps{position:absolute;left:clamp(20px,5vw,72px);bottom:clamp(28px,8vh,88px);z-index:3;width:min(640px,calc(100% - 40px));pointer-events:none}
+.cap{position:absolute;left:0;bottom:0;width:100%;opacity:0;will-change:opacity,transform}
+.cap h2{font-size:clamp(40px,5.4vw,84px);line-height:1;color:var(--ink);text-wrap:balance;text-shadow:0 2px 0 rgba(255,255,255,.6)}
+.cap p{margin:16px 0 0;max-width:38ch;font-size:clamp(17px,1.4vw,21px);color:var(--ink-2);background:rgba(255,255,255,.82);display:inline;padding:4px 10px;border-radius:8px;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;line-height:1.75}
+.cap p+p{display:block;margin-top:10px}
+.dots{position:absolute;right:clamp(18px,3vw,40px);top:50%;transform:translateY(-50%);z-index:3;display:grid;gap:12px}
+.dots i{width:12px;height:12px;border-radius:50%;background:rgba(28,35,64,.18);border:2px solid transparent;transition:transform .3s,background .3s}
+.dots i.on{background:var(--crayon);border-color:var(--ink);transform:scale(1.35)}
+.hint{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:10px;font-weight:700;color:var(--ink-2);font-size:15px}
+.chalk{width:4px;height:42px;border-radius:4px;background:linear-gradient(var(--ink) 40%,transparent 40%);background-size:4px 14px;animation:chalk 1.2s linear infinite}
+@keyframes chalk{to{background-position:0 14px}}
+
+/* the board: projects as apps on the smart board */
+.board{background:var(--slate);color:#fff;padding:0 0 110px;position:relative}
+.board-frame{max-width:1360px;margin:0 auto;padding:96px 40px 0}
+.board h2{font-size:clamp(40px,4.6vw,68px);line-height:1.02}
+.board .sub{margin:14px 0 0;color:rgba(255,255,255,.72);font-size:20px;max-width:52ch}
+.apps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:56px}
+.app{--c:var(--sky);display:flex;flex-direction:column;text-decoration:none;color:#fff;border-radius:28px;outline-offset:6px}
+.app .tile{position:relative;aspect-ratio:4/3;border-radius:28px;background:var(--c);padding:10px;box-shadow:0 8px 0 rgba(0,0,0,.28);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.app .tile img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:20px;background:rgba(255,255,255,.2)}
+.app .tile .art{width:100%;height:100%;border-radius:20px;display:grid;place-items:center;background:rgba(255,255,255,.25);font:700 40px var(--disp)}
+.app:hover .tile{transform:translateY(-6px) rotate(-1deg)}
+.app:active .tile{transform:translateY(2px)}
+.app h3{font-size:24px;margin:20px 4px 4px}
+.app p{margin:0 4px;color:rgba(255,255,255,.7);font-size:16px;line-height:1.5}
+.app .pill{position:absolute;top:18px;left:18px;padding:6px 12px;border-radius:999px;background:#fff;color:var(--ink);font-weight:700;font-size:14px}
+.tray{max-width:1280px;margin:80px auto 0;height:18px;border-radius:0 0 18px 18px;background:#2f3852;position:relative}
+.tray::before{content:"";position:absolute;left:12%;top:-6px;width:120px;height:10px;border-radius:6px;background:var(--crayon)}
+.tray::after{content:"";position:absolute;left:calc(12% + 140px);top:-6px;width:90px;height:10px;border-radius:6px;background:var(--berry)}
+
+/* Can's Birthday */
+.new{padding:140px 0 40px}
+.new-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:64px;align-items:center}
+.polaroid{background:#fff;padding:14px 14px 56px;border-radius:6px;border:2.5px solid var(--ink);box-shadow:0 10px 0 var(--ink);transform:rotate(-2deg);position:relative}
+.polaroid img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:2px}
+.polaroid figcaption{position:absolute;left:18px;bottom:16px;font:italic 400 18px var(--body);color:var(--ink-2)}
+.tape{position:absolute;top:-16px;left:50%;width:120px;height:32px;margin-left:-60px;background:rgba(255,194,61,.75);transform:rotate(3deg);border-radius:3px}
+.new h2{font-size:clamp(44px,5vw,76px);line-height:1}
+.new p{color:var(--ink-2);font-size:20px;max-width:38ch;margin:20px 0 30px}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+
+/* about */
+.about{padding:140px 0}
+.about-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:72px}
+.about .big{font:500 clamp(28px,3vw,42px)/1.25 var(--disp);font-variation-settings:"SOFT" 100;margin:0;text-wrap:pretty}
+.about .small{color:var(--ink-2);margin:28px 0 0;max-width:56ch}
+.kit{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.kit li{display:grid;grid-template-columns:18px 1fr;gap:14px;align-items:baseline;padding:14px 0;border-bottom:2px dashed var(--line)}
+.kit li i{width:14px;height:14px;border-radius:4px;background:var(--c,var(--crayon));transform:translateY(2px)}
+.kit b{display:block;font-size:18px}
+.kit span{color:var(--soft);font-size:16px}
+
+/* contact */
+.contact{padding:120px 0 140px;text-align:center;background:var(--crayon);border-top:2.5px solid var(--ink)}
+.contact h2{font-size:clamp(48px,8vw,128px);line-height:.95;max-width:12ch;margin:0 auto}
+.contact p{font-size:20px;color:var(--ink-2);margin:24px auto 36px;max-width:40ch}
+.contact .row{justify-content:center}
+footer{background:var(--ink);color:rgba(255,255,255,.7);padding:26px 0;font-size:15px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:1100px){ .apps{grid-template-columns:repeat(3,minmax(0,1fr))} .links{display:none} .name{margin-right:auto} }
+@media (max-width:760px){ .bar .btn:not(#viewSwitch){display:none} #viewSwitch{height:42px;padding:0 12px;font-size:14px} }
+@media (max-width:900px){ .hint{display:none} }
+@media (max-width:900px){
+  .new-grid,.about-grid{grid-template-columns:1fr;gap:48px}
+  .apps{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+}
+@media (max-width:640px){
+  .wrap,.board-frame{padding-left:18px;padding-right:18px}
+  .links{display:none}
+  .bar .btn:not(#viewSwitch){display:none}
+  #viewSwitch{height:42px;padding:0 12px;font-size:14px}
+  .name{margin-right:auto}
+  .apps{grid-template-columns:1fr 1fr;gap:16px}
+  .app h3{font-size:19px;margin-top:14px}
+  .app p{display:none}
+  .dots{display:none}
+}
+@media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="name" href="#story" aria-label="Deniz, başa dön">
+    <span class="face" aria-hidden="true"><svg viewBox="0 0 26 26"><circle cx="9" cy="11" r="2.2" fill="#1c2340"/><circle cx="17" cy="11" r="2.2" fill="#1c2340"/><path d="M8 16q5 4.5 10 0" stroke="#1c2340" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></span>
+    <b>Deniz</b>
+  </a>
+  <nav class="links" aria-label="Bölümler">
+    <a href="#board" data-i="nav.board">Oyunlar ve projeler</a>
+    <a href="#about" data-i="nav.about">Hakkımda</a>
+    <a href="#contact" data-i="nav.contact">İletişim</a>
+  </nav>
+  <button class="lang" id="lang" type="button" aria-label="Switch to English">EN</button>
+  <a class="btn small ghost" href="/" id="viewSwitch" data-i="nav.view">Suluboya sürüm</a>
+  <a class="btn small" href="https://joyofenglish.vercel.app/games/cans-birthday/" target="_blank" rel="noopener" data-i="nav.cta">Can's Birthday'i oyna</a>
+</header>
+
+<main>
+  <section id="story" aria-label="Sınıf">
+    <div class="pin">
+      <canvas id="scene" aria-label="Çocukların olduğu 3D bir sınıf. Kaydırdıkça bir ders oynanıyor." role="img"></canvas>
+      <div class="cover" id="cover"><span data-i="loading">Sınıf hazırlanıyor</span></div>
+      <div class="caps" aria-live="polite">
+        <div class="cap"><h2 data-i="c1.h">Burası bir sınıf.</h2><p data-i="c1.p">Ben de bu sınıfın akıllı tahtası için oyunlar yapıyorum. Aşağı kaydır, ders başlasın.</p></div>
+        <div class="cap"><h2 data-i="c2.h">Tahta açılıyor.</h2><p data-i="c2.p">Bugünün oyunu Months Race. Herkes tahtaya dönüyor.</p></div>
+        <div class="cap"><h2 data-i="c3.h">Soru tahtada, eller havada.</h2><p data-i="c3.p">Herkes cevabı biliyor. Ya da bildiğini sanıyor.</p></div>
+        <div class="cap"><h2 data-i="c4.h">Can tahtaya koşuyor.</h2><p data-i="c4.p">Doğru cevaba tek bir dokunuş yeter.</p></div>
+        <div class="cap"><h2 data-i="c5.h">Doğru! Sınıf yıkılıyor.</h2><p data-i="c5.p">Çocuklara tıklarsan onlar da zıplıyor.</p></div>
+        <div class="cap"><h2 data-i="c6.h">Şimdi tahtaya yakından bakalım.</h2><p data-i="c6.p">Tahtadaki her oyunu ben yaptım.</p></div>
+      </div>
+      <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="hint" id="hint"><span data-i="hint">Aşağı kaydır</span><span class="chalk"></span></div>
+    </div>
+  </section>
+
+  <section class="board" id="board" aria-labelledby="board-t">
+    <div class="board-frame">
+      <h2 id="board-t" data-i="board.t">Oyunlar ve projeler</h2>
+      <p class="sub" data-i="board.sub">Hepsi bir sınıfta denendi, hepsi tek tek elle kodlandı. Birine dokun, açılsın.</p>
+      <div class="apps" id="apps"></div>
+    </div>
+    <div class="tray" aria-hidden="true"></div>
+  </section>
+
+  <section class="new" id="new" aria-labelledby="new-t">
+    <div class="wrap new-grid">
+      <figure class="polaroid" style="margin:0">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="https://joyofenglish.vercel.app/games/cans-birthday/promo.gif" width="640" height="360" alt="Can's Birthday oyunundan 3D sahneler" id="newImg" loading="lazy">
+        <figcaption data-i="new.cap">Can, Ece ve Grandma</figcaption>
+      </figure>
+      <div>
+        <h2 id="new-t">Can's Birthday</h2>
+        <p data-i="new.p">On sahnelik low-poly 3D bir hikâye oyunu. Can'ın doğum günü sabahından sınıftaki partiye kadar sürüyor. Hikâye ara ara durup soru soruyor, sınıf da hep birlikte ya da iki takım halinde cevaplıyor.</p>
+        <div class="row">
+          <a class="btn" href="https://joyofenglish.vercel.app/games/cans-birthday/" target="_blank" rel="noopener" data-i="new.play">Oyunu aç</a>
+          <a class="btn ghost" href="https://joyofenglish.vercel.app/" target="_blank" rel="noopener" data-i="new.site">Bütün çalışma kâğıtları</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about" aria-labelledby="about-t">
+    <div class="wrap about-grid">
+      <div>
+        <h2 id="about-t" class="big" data-i="about.big">Bir derste gerçekten işe yarayan şeyler yapmayı seviyorum: çocukların sırayla tahtaya koştuğu oyunlar, öğretmenin tek dokunuşla açtığı çalışma kâğıtları.</h2>
+        <p class="small" data-i="about.small">İngilizce öğretmenliği son sınıftayım ve stajımı bir ilkokulda yapıyorum. Çoğu proje tek bir HTML dosyası olarak başlıyor, sınıfta denendikçe büyüyor. Sesleri kodda üretiyorum, çizimleri elle yapıyorum, akıllı tahtada çocukların boyunun yetişeceği yükseklikleri hesaba katıyorum.</p>
+      </div>
+      <ul class="kit" aria-label="Kullandıklarım">
+        <li style="--c:var(--sky)"><i></i><div><b data-i="k1">Web</b><span>HTML, CSS, JavaScript, TypeScript</span></div></li>
+        <li style="--c:var(--mint)"><i></i><div><b data-i="k2">Çatılar</b><span>React, Next.js, Vite, Express</span></div></li>
+        <li style="--c:var(--berry)"><i></i><div><b data-i="k3">Oyun ve 3D</b><span>Phaser, three.js, Canvas, Web Audio</span></div></li>
+        <li style="--c:var(--grape)"><i></i><div><b data-i="k4">Veri</b><span>Supabase, PostgreSQL, Firebase</span></div></li>
+        <li style="--c:var(--crayon)"><i></i><div><b data-i="k5">Yapay zekâ</b><span>Claude, Gemini, ElevenLabs</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-t">
+    <div class="wrap">
+      <h2 id="contact-t" data-i="contact.t">Birlikte bir oyun yapalım.</h2>
+      <p data-i="contact.p">Sınıfın için bir oyun mu lazım, ya da bir fikrin mi var? Yaz bana.</p>
+      <div class="row">
+        <a class="btn ghost" href="https://github.com/denzi28" target="_blank" rel="noopener">github.com/denzi28</a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span>© 2026 Deniz</span><span data-i="foot">Elle kodlandı, Vercel'de yayında. Kapak sahnesi three.js ile.</span></div></footer>
+
+<script>
+const GH='https://github.com/denzi28/';
+const PROJECTS=[
+ {img:'english-with-joy',color:'#ffc23d',title:'Joy of English',short:'Joy of English',url:'https://joyofenglish.vercel.app',pill:{tr:'Yeni oyun',en:'New game'},
+  tr:'3. sınıf İngilizcesi için akıllı tahta oyunları ve çalışma kâğıtları.',en:'Smart-board games and worksheets for 3rd-grade English.'},
+ {img:'sinif-panosu',color:'#3ccb9a',title:'Sınıf Panosu',short:'Sınıf Panosu',url:'https://ogrenci-panosu-deniz.vercel.app',
+  tr:'Davranış yıldızları, kitap okuma, rozetler ve 13 oyunlu bir sınıf panosu.',en:'A class board with behaviour stars, reading logs, badges and 13 games.'},
+ {img:'cefr-storybooks',color:'#ff5d8f',title:'CEFR Story Books',short:'Story Books',url:'https://cefr-storybooks.vercel.app',
+  tr:'A1 ile C2 arası seviyeli, resimli İngilizce hikâyeler.',en:'Illustrated English stories levelled from A1 to C2.'},
+ {img:'leafpage',color:'#7cc4ff',title:'Leafpage',short:'Leafpage',url:'https://leafpage.app',
+  tr:'Kâğıt hissi veren, kalemle yazılan bir PDF okuyucu.',en:'A PDF reader that feels like paper, with a pen.'},
+ {img:'iuc-translation',color:'#b28cff',title:'IUC Translation Community',short:'Translation',url:'https://iuctranslationcommunity.org',
+  tr:'Üniversite dersi için grup blogu ve öğretmen geri bildirimi.',en:'A course space with group blogs and private feedback.'},
+ {img:'powder-and-penance',color:'#ff8f6b',title:'Powder & Penance',short:'Powder & Penance',url:GH+'powder-and-penance',
+  tr:'Mum ışığında geçen, pixel-art bir aksiyon oyunu.',en:'A candle-lit pixel-art action game.'},
+ {img:'',color:'#ffd56b',title:'Trail Log',short:'Trail Log',url:GH,art:'5k',
+  tr:'Garmin koşularımı günlüğe çeviren kişisel panel.',en:'A personal dashboard that turns my Garmin runs into a log.'},
+ {img:'',color:'#9ed3be',title:"Can's Birthday",short:"Can's Birthday",url:'https://joyofenglish.vercel.app/games/cans-birthday/',art:'3D',
+  tr:'On sahnelik 3D hikâye oyunu, Joy of English içinde.',en:'A ten-scene 3D story game inside Joy of English.'}];
+window.BOARD_TILES=PROJECTS;
+
+const I18N={
+ tr:{'nav.board':'Oyunlar ve projeler','nav.about':'Hakkımda','nav.contact':'İletişim','nav.cta':"Can's Birthday'i oyna",'nav.view':'Suluboya sürüm',loading:'Sınıf hazırlanıyor',hint:'Aşağı kaydır',
+  'c1.h':'Burası bir sınıf.','c1.p':'Ben de bu sınıfın akıllı tahtası için oyunlar yapıyorum. Aşağı kaydır, ders başlasın.',
+  'c2.h':'Tahta açılıyor.','c2.p':'Bugünün oyunu Months Race. Herkes tahtaya dönüyor.',
+  'c3.h':'Soru tahtada, eller havada.','c3.p':'Herkes cevabı biliyor. Ya da bildiğini sanıyor.',
+  'c4.h':'Can tahtaya koşuyor.','c4.p':'Doğru cevaba tek bir dokunuş yeter.',
+  'c5.h':'Doğru! Sınıf yıkılıyor.','c5.p':'Çocuklara tıklarsan onlar da zıplıyor.',
+  'c6.h':'Şimdi tahtaya yakından bakalım.','c6.p':'Tahtadaki her oyunu ben yaptım.',
+  'board.t':'Oyunlar ve projeler','board.sub':'Hepsi bir sınıfta denendi, hepsi tek tek elle kodlandı. Birine dokun, açılsın.',
+  'new.cap':'Can, Ece ve Grandma','new.p':"On sahnelik low-poly 3D bir hikâye oyunu. Can'ın doğum günü sabahından sınıftaki partiye kadar sürüyor. Hikâye ara ara durup soru soruyor, sınıf da hep birlikte ya da iki takım halinde cevaplıyor.",
+  'new.play':'Oyunu aç','new.site':'Bütün çalışma kâğıtları',
+  'about.big':'Bir derste gerçekten işe yarayan şeyler yapmayı seviyorum: çocukların sırayla tahtaya koştuğu oyunlar, öğretmenin tek dokunuşla açtığı çalışma kâğıtları.',
+  'about.small':'İngilizce öğretmenliği son sınıftayım ve stajımı bir ilkokulda yapıyorum. Çoğu proje tek bir HTML dosyası olarak başlıyor, sınıfta denendikçe büyüyor. Sesleri kodda üretiyorum, çizimleri elle yapıyorum, akıllı tahtada çocukların boyunun yetişeceği yükseklikleri hesaba katıyorum.',
+  k1:'Web',k2:'Çatılar',k3:'Oyun ve 3D',k4:'Veri',k5:'Yapay zekâ',
+  'contact.t':'Birlikte bir oyun yapalım.','contact.p':'Sınıfın için bir oyun mu lazım, ya da bir fikrin mi var? Yaz bana.',
+  foot:"Elle kodlandı, Vercel'de yayında. Kapak sahnesi three.js ile.",
+  board:{game:'Months Race',q:'What comes after March?',opts:['May','April','June'],ok:'Great job!',launch:'Oyunlar ve projeler',launchSub:'Birine dokun, açılsın'}},
+ en:{'nav.board':'Games and projects','nav.about':'About','nav.contact':'Contact','nav.cta':"Play Can's Birthday",'nav.view':'Watercolor version',loading:'Setting up the classroom',hint:'Scroll down',
+  'c1.h':'This is a classroom.','c1.p':'I make games for its smart board. Scroll down and the lesson begins.',
+  'c2.h':'The board lights up.','c2.p':"Today's game is Months Race. Everyone turns around.",
+  'c3.h':'A question, and every hand goes up.','c3.p':'Everyone knows the answer. Or thinks they do.',
+  'c4.h':'Can runs to the board.','c4.p':'One tap on the right answer.',
+  'c5.h':'Correct! The class goes wild.','c5.p':'Click the kids and they jump too.',
+  'c6.h':"Let's take a closer look at the board.",'c6.p':'I made every game on it.',
+  'board.t':'Games and projects','board.sub':'Each one was tried in a real classroom and coded by hand. Tap one to open it.',
+  'new.cap':'Can, Ece and Grandma','new.p':"A ten-scene low-poly 3D story game, from the morning of Can's birthday to the party in his classroom. The story stops for questions, and the class answers together or in two teams.",
+  'new.play':'Open the game','new.site':'All the worksheets',
+  'about.big':'I like making things that actually work in a lesson: games kids run up to the board for, worksheets a teacher opens with one tap.',
+  'about.small':"I'm in my last year of English language teaching and doing my practicum at a primary school. Most projects start as one HTML file and grow as they get tried in class. I make the sounds in code, draw the art by hand, and design smart-board layouts around what a child can reach.",
+  k1:'Web',k2:'Frameworks',k3:'Games and 3D',k4:'Data',k5:'AI',
+  'contact.t':"Let's make a game together.",'contact.p':'Need a game for your class, or have an idea? Get in touch.',
+  foot:'Hand-coded, hosted on Vercel. The opening scene is three.js.',
+  board:{game:'Months Race',q:'What comes after March?',opts:['May','April','June'],ok:'Great job!',launch:'Games and projects',launchSub:'Tap one to open it'}}};
+
+let lang='tr';
+try{lang=localStorage.getItem('lang')||((navigator.language||'tr').toLowerCase().startsWith('tr')?'tr':'en')}catch(e){}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function render(){
+  const t=I18N[lang];document.documentElement.lang=lang;window.BOARD_TEXT=t.board;
+  document.title=lang==='tr'?'Deniz · Sınıf için oyunlar':'Deniz · Games for the classroom';
+  document.querySelectorAll('[data-i]').forEach(e=>{const v=t[e.dataset.i];if(typeof v==='string')e.textContent=v});
+  const L=document.getElementById('lang');L.textContent=lang==='tr'?'EN':'TR';L.setAttribute('aria-label',lang==='tr'?'Switch to English':'Türkçeye geç');
+  document.getElementById('apps').innerHTML=PROJECTS.map(p=>`<a class="app" href="${p.url}" target="_blank" rel="noopener" style="--c:${p.color}">
+    <span class="tile">${p.img?`<img src="img/${p.img}.webp" alt="" loading="lazy" width="1280" height="800">`:`<span class="art">${esc(p.art)}</span>`}${p.pill?`<span class="pill">${esc(p.pill[lang])}</span>`:''}</span>
+    <h3>${esc(p.title)}</h3><p>${esc(p[lang])}</p></a>`).join('');
+}
+document.getElementById('viewSwitch').addEventListener('click',()=>{try{localStorage.setItem('view','2d')}catch(e){}});
+document.getElementById('lang').addEventListener('click',()=>{lang=lang==='tr'?'en':'tr';try{localStorage.setItem('lang',lang)}catch(e){}render()});
+render();
+</script>
+<script type="module">
+const cover=document.getElementById('cover');
+import('./js/class.js').then(()=>setTimeout(()=>cover.classList.add('gone'),350))
+  .catch(()=>{cover.classList.add('gone');document.getElementById('story').style.height='auto';document.querySelector('.pin').style.height='60vh'});
+</script>
+<script nomodule>document.getElementById('cover').classList.add('gone')</script>
+</body>
+</html>

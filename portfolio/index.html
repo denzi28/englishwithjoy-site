@@ -2,22 +2,23 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
+<script>try{if(localStorage.getItem("view")==="3d"&&!/[?&]v=/.test(location.search))location.replace("/3d"+location.hash)}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deniz · Sınıf için oyunlar</title>
 <meta name="description" content="Deniz'in akıllı tahta oyunları, sınıf araçları ve projeleri. Aşağı kaydır, ders başlasın.">
 <meta property="og:title" content="Deniz · Sınıf için oyunlar">
 <meta property="og:description" content="Akıllı tahta oyunları, sınıf araçları ve projeler.">
 <meta property="og:image" content="img/english-with-joy.webp">
-<meta name="theme-color" content="#cfe0ff">
+<meta name="theme-color" content="#f7efe8">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23ffc23d'/%3E%3Ccircle cx='24' cy='28' r='5' fill='%231c2340'/%3E%3Ccircle cx='40' cy='28' r='5' fill='%231c2340'/%3E%3Cpath d='M20 40q12 10 24 0' stroke='%231c2340' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..800,100&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#f3f6ff; --paper-2:#e6edff; --ink:#1c2340; --ink-2:#3d4566; --soft:#6b7394; --line:#cdd6f2;
-  --crayon:#ffc23d; --berry:#ff5d8f; --mint:#3ccb9a; --sky:#7cc4ff; --grape:#b28cff;
-  --slate:#1b2340; --bezel:#262c3b;
+  --paper:#f7efe8; --paper-2:#f1e2da; --ink:#4a2a3a; --ink-2:#6e4a5c; --soft:#8f7280; --line:#e6d2ca;
+  --crayon:#f2c46b; --berry:#d9677f; --mint:#8fbf9f; --sky:#9cc7e6; --grape:#b9a3e3;
+  --slate:#2c3048; --bezel:#3a3550;
   --disp:"Fraunces",Georgia,serif; --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 *{box-sizing:border-box}
@@ -53,28 +54,29 @@ h1,h2,h3{font-family:var(--disp);font-variation-settings:"SOFT" 100;font-weight:
 .lang{height:42px;min-width:52px;border-radius:13px;border:2.5px solid var(--ink);background:#fff;font:700 14px/1 var(--body);color:var(--ink);cursor:pointer;box-shadow:0 4px 0 var(--ink)}
 .lang:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
 
-/* the classroom story */
-#story{position:relative;height:820vh}
-.pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#cfe0ff}
-#scene{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
-.cover{position:absolute;inset:0;z-index:5;display:grid;place-items:center;background:#cfe0ff;transition:opacity .8s}
-.cover.gone{opacity:0;pointer-events:none}
-.cover span{font:600 22px var(--disp);font-variation-settings:"SOFT" 100;color:var(--ink-2)}
-.pin::after{content:"";position:absolute;left:0;bottom:0;width:min(900px,100%);height:min(520px,70%);z-index:2;pointer-events:none;
-  background:radial-gradient(80% 80% at 0% 100%,rgba(243,246,255,.92),rgba(243,246,255,.55) 45%,rgba(243,246,255,0) 75%)}
-.caps{position:absolute;left:clamp(20px,5vw,72px);bottom:clamp(28px,8vh,88px);z-index:3;width:min(640px,calc(100% - 40px));pointer-events:none}
+/* the watercolor run */
+#run{position:relative;height:900vh}
+.pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--paper);perspective:1600px}
+#paint{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:pointer}
+.pin::after{content:"";position:absolute;left:0;bottom:0;width:min(860px,100%);height:min(480px,70%);z-index:2;pointer-events:none;
+  background:radial-gradient(80% 80% at 0% 100%,rgba(247,239,232,.9),rgba(247,239,232,.5) 45%,rgba(247,239,232,0) 75%)}
+.caps{position:absolute;left:clamp(20px,5vw,72px);bottom:clamp(28px,8vh,88px);z-index:3;width:min(620px,calc(100% - 40px));pointer-events:none}
 .cap{position:absolute;left:0;bottom:0;width:100%;opacity:0;will-change:opacity,transform}
-.cap h2{font-size:clamp(40px,5.4vw,84px);line-height:1;color:var(--ink);text-wrap:balance;text-shadow:0 2px 0 rgba(255,255,255,.6)}
-.cap p{margin:16px 0 0;max-width:38ch;font-size:clamp(17px,1.4vw,21px);color:var(--ink-2);background:rgba(255,255,255,.82);display:inline;padding:4px 10px;border-radius:8px;
-  -webkit-box-decoration-break:clone;box-decoration-break:clone;line-height:1.75}
-.cap p+p{display:block;margin-top:10px}
-.dots{position:absolute;right:clamp(18px,3vw,40px);top:50%;transform:translateY(-50%);z-index:3;display:grid;gap:12px}
-.dots i{width:12px;height:12px;border-radius:50%;background:rgba(28,35,64,.18);border:2px solid transparent;transition:transform .3s,background .3s}
-.dots i.on{background:var(--crayon);border-color:var(--ink);transform:scale(1.35)}
+.cap h2{font-size:clamp(38px,5vw,78px);line-height:1.02;color:var(--ink);text-wrap:balance;font-style:italic;font-weight:500}
+.cap p{margin:14px 0 0;max-width:40ch;font-size:clamp(17px,1.4vw,21px);color:var(--ink-2)}
 .hint{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:10px;font-weight:700;color:var(--ink-2);font-size:15px}
-.chalk{width:4px;height:42px;border-radius:4px;background:linear-gradient(var(--ink) 40%,transparent 40%);background-size:4px 14px;animation:chalk 1.2s linear infinite}
+.chalk{width:4px;height:42px;border-radius:4px;background:linear-gradient(var(--berry) 40%,transparent 40%);background-size:4px 14px;animation:chalk 1.2s linear infinite}
 @keyframes chalk{to{background-position:0 14px}}
-
+/* the board that leaves the painting */
+.b3d{position:absolute;left:0;top:0;width:100%;height:100%;z-index:4;visibility:hidden;transform-style:preserve-3d;will-change:transform;--depth:0px;--bez:26px;--content:0;--glow:0}
+.b3d .bface{position:absolute;inset:0;box-sizing:border-box;border:var(--bez) solid var(--bezel);border-radius:calc(var(--bez) * .9);background:var(--slate);overflow:hidden;
+  box-shadow:0 0 calc(200px * var(--glow)) calc(30px * var(--glow)) rgba(255,226,150,calc(var(--glow) * .9))}
+.b3d .screen{position:absolute;inset:0;opacity:var(--content);color:#fff;pointer-events:none}
+.b3d .side{position:absolute;display:block}
+.b3d .l{top:0;left:0;width:var(--depth);height:100%;transform-origin:0 50%;transform:rotateY(90deg);background:#4a4466}
+.b3d .r{top:0;right:0;width:var(--depth);height:100%;transform-origin:100% 50%;transform:rotateY(-90deg);background:#221f35}
+.b3d .t{top:0;left:0;width:100%;height:var(--depth);transform-origin:50% 0;transform:rotateX(-90deg);background:#57507a}
+.b3d .b{bottom:0;left:0;width:100%;height:var(--depth);transform-origin:50% 100%;transform:rotateX(90deg);background:#1b1829}
 /* the board: projects as apps on the smart board */
 .board{background:var(--slate);color:#fff;padding:0 0 110px;position:relative}
 .board-frame{max-width:1360px;margin:0 auto;padding:96px 40px 0}
@@ -125,7 +127,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.7);padding:26px 0;font-size
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
 @media (max-width:1100px){ .apps{grid-template-columns:repeat(3,minmax(0,1fr))} .links{display:none} .name{margin-right:auto} }
-@media (max-width:760px){ .bar .btn{display:none} }
+@media (max-width:760px){ .bar .btn:not(#viewSwitch){display:none} #viewSwitch{height:42px;padding:0 12px;font-size:14px} }
 @media (max-width:900px){ .hint{display:none} }
 @media (max-width:900px){
   .new-grid,.about-grid{grid-template-columns:1fr;gap:48px}
@@ -134,7 +136,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 @media (max-width:640px){
   .wrap,.board-frame{padding-left:18px;padding-right:18px}
   .links{display:none}
-  .bar .btn{display:none}
+  .bar .btn:not(#viewSwitch){display:none}
+  #viewSwitch{height:42px;padding:0 12px;font-size:14px}
   .name{margin-right:auto}
   .apps{grid-template-columns:1fr 1fr;gap:16px}
   .app h3{font-size:19px;margin-top:14px}
@@ -147,7 +150,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <body>
 
 <header class="bar">
-  <a class="name" href="#story" aria-label="Deniz, başa dön">
+  <a class="name" href="#run" aria-label="Deniz, başa dön">
     <span class="face" aria-hidden="true"><svg viewBox="0 0 26 26"><circle cx="9" cy="11" r="2.2" fill="#1c2340"/><circle cx="17" cy="11" r="2.2" fill="#1c2340"/><path d="M8 16q5 4.5 10 0" stroke="#1c2340" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></span>
     <b>Deniz</b>
   </a>
@@ -157,23 +160,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     <a href="#contact" data-i="nav.contact">İletişim</a>
   </nav>
   <button class="lang" id="lang" type="button" aria-label="Switch to English">EN</button>
+  <a class="btn small ghost" href="/3d" id="viewSwitch" data-i="nav.view">3D sürüm</a>
   <a class="btn small" href="https://joyofenglish.vercel.app/games/cans-birthday/" target="_blank" rel="noopener" data-i="nav.cta">Can's Birthday'i oyna</a>
 </header>
 
 <main>
-  <section id="story" aria-label="Sınıf">
+  <section id="run" aria-label="Okul yolu">
     <div class="pin">
-      <canvas id="scene" aria-label="Çocukların olduğu 3D bir sınıf. Kaydırdıkça bir ders oynanıyor." role="img"></canvas>
-      <div class="cover" id="cover"><span data-i="loading">Sınıf hazırlanıyor</span></div>
+      <canvas id="paint" role="img" aria-label="Suluboya bir dünyada okula koşan bir öğrenci. Kaydırdıkça sınıfa varıp akıllı tahtaya dokunuyor."></canvas>
       <div class="caps" aria-live="polite">
-        <div class="cap"><h2 data-i="c1.h">Burası bir sınıf.</h2><p data-i="c1.p">Ben de bu sınıfın akıllı tahtası için oyunlar yapıyorum. Aşağı kaydır, ders başlasın.</p></div>
-        <div class="cap"><h2 data-i="c2.h">Tahta açılıyor.</h2><p data-i="c2.p">Bugünün oyunu Months Race. Herkes tahtaya dönüyor.</p></div>
-        <div class="cap"><h2 data-i="c3.h">Soru tahtada, eller havada.</h2><p data-i="c3.p">Herkes cevabı biliyor. Ya da bildiğini sanıyor.</p></div>
-        <div class="cap"><h2 data-i="c4.h">Can tahtaya koşuyor.</h2><p data-i="c4.p">Doğru cevaba tek bir dokunuş yeter.</p></div>
-        <div class="cap"><h2 data-i="c5.h">Doğru! Sınıf yıkılıyor.</h2><p data-i="c5.p">Çocuklara tıklarsan onlar da zıplıyor.</p></div>
-        <div class="cap"><h2 data-i="c6.h">Şimdi tahtaya yakından bakalım.</h2><p data-i="c6.p">Tahtadaki her oyunu ben yaptım.</p></div>
+        <div class="cap"><h2 data-i="r1.h">Her ders bir yolculukla başlar.</h2><p data-i="r1.p">Kaydır, Can okula koşsun. Ona tıklarsan zıplar.</p></div>
+        <div class="cap"><h2 data-i="r2.h">Yol biraz yokuş.</h2><p data-i="r2.p">Ama alfabe blokları yolu gösteriyor.</p></div>
+        <div class="cap"><h2 data-i="r3.h">Okul kapısı açık.</h2><p data-i="r3.p">Sınıf toplanmış, tahta bekliyor.</p></div>
+        <div class="cap"><h2 data-i="r4.h">Bir dokunuş yeter.</h2><p data-i="r4.p">Tahtaya dokununca benim dünyam açılıyor.</p></div>
       </div>
-      <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="b3d" id="b3d" aria-hidden="true" inert><div class="bface"><div class="screen board" id="b3dScreen"></div></div><i class="side l"></i><i class="side r"></i><i class="side t"></i><i class="side b"></i></div>
       <div class="hint" id="hint"><span data-i="hint">Aşağı kaydır</span><span class="chalk"></span></div>
     </div>
   </section>
@@ -231,7 +232,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     </div>
   </section>
 </main>
-<footer><div class="wrap"><span>© 2026 Deniz</span><span data-i="foot">Elle kodlandı, Vercel'de yayında. Kapak sahnesi three.js ile.</span></div></footer>
+<footer><div class="wrap"><span>© 2026 Deniz</span><span data-i="foot">Elle kodlandı, Vercel'de yayında. Kapak sahnesi kodla çizilen suluboya.</span></div></footer>
 
 <script>
 const GH='https://github.com/denzi28/';
@@ -255,7 +256,7 @@ const PROJECTS=[
 window.BOARD_TILES=PROJECTS;
 
 const I18N={
- tr:{'nav.board':'Oyunlar ve projeler','nav.about':'Hakkımda','nav.contact':'İletişim','nav.cta':"Can's Birthday'i oyna",loading:'Sınıf hazırlanıyor',hint:'Aşağı kaydır',
+ tr:{'nav.board':'Oyunlar ve projeler','nav.about':'Hakkımda','nav.contact':'İletişim','nav.cta':"Can's Birthday'i oyna",'nav.view':'3D sürüm',board2:'Dokun','r1.h':'Her ders bir yolculukla başlar.','r1.p':'Kaydır, Can okula koşsun. Ona tıklarsan zıplar.','r2.h':'Yol biraz yokuş.','r2.p':'Ama alfabe blokları yolu gösteriyor.','r3.h':'Okul kapısı açık.','r3.p':'Sınıf toplanmış, tahta bekliyor.','r4.h':'Bir dokunuş yeter.','r4.p':'Tahtaya dokununca benim dünyam açılıyor.',loading:'Sınıf hazırlanıyor',hint:'Aşağı kaydır',
   'c1.h':'Burası bir sınıf.','c1.p':'Ben de bu sınıfın akıllı tahtası için oyunlar yapıyorum. Aşağı kaydır, ders başlasın.',
   'c2.h':'Tahta açılıyor.','c2.p':'Bugünün oyunu Months Race. Herkes tahtaya dönüyor.',
   'c3.h':'Soru tahtada, eller havada.','c3.p':'Herkes cevabı biliyor. Ya da bildiğini sanıyor.',
@@ -271,7 +272,7 @@ const I18N={
   'contact.t':'Birlikte bir oyun yapalım.','contact.p':'Sınıfın için bir oyun mu lazım, ya da bir fikrin mi var? Yaz bana.',
   foot:"Elle kodlandı, Vercel'de yayında. Kapak sahnesi three.js ile.",
   board:{game:'Months Race',q:'What comes after March?',opts:['May','April','June'],ok:'Great job!',launch:'Oyunlar ve projeler',launchSub:'Birine dokun, açılsın'}},
- en:{'nav.board':'Games and projects','nav.about':'About','nav.contact':'Contact','nav.cta':"Play Can's Birthday",loading:'Setting up the classroom',hint:'Scroll down',
+ en:{'nav.board':'Games and projects','nav.about':'About','nav.contact':'Contact','nav.cta':"Play Can's Birthday",'nav.view':'3D version',board2:'Touch','r1.h':'Every lesson starts with a journey.','r1.p':'Scroll and Can runs to school. Click him and he jumps.','r2.h':'The road goes uphill.','r2.p':'The alphabet blocks show the way.','r3.h':'The school door is open.','r3.p':'The class is ready, and the board is waiting.','r4.h':'One touch is enough.','r4.p':'Touch the board and my world opens.',loading:'Setting up the classroom',hint:'Scroll down',
   'c1.h':'This is a classroom.','c1.p':'I make games for its smart board. Scroll down and the lesson begins.',
   'c2.h':'The board lights up.','c2.p':"Today's game is Months Race. Everyone turns around.",
   'c3.h':'A question, and every hand goes up.','c3.p':'Everyone knows the answer. Or thinks they do.',
@@ -285,7 +286,7 @@ const I18N={
   'about.small':"I'm in my last year of English language teaching and doing my practicum at a primary school. Most projects start as one HTML file and grow as they get tried in class. I make the sounds in code, draw the art by hand, and design smart-board layouts around what a child can reach.",
   k1:'Web',k2:'Frameworks',k3:'Games and 3D',k4:'Data',k5:'AI',
   'contact.t':"Let's make a game together.",'contact.p':'Need a game for your class, or have an idea? Get in touch.',
-  foot:'Hand-coded, hosted on Vercel. The opening scene is three.js.',
+  foot:'Hand-coded, hosted on Vercel. The opening scene is watercolor drawn in code.',
   board:{game:'Months Race',q:'What comes after March?',opts:['May','April','June'],ok:'Great job!',launch:'Games and projects',launchSub:'Tap one to open it'}}};
 
 let lang='tr';
@@ -296,18 +297,17 @@ function render(){
   document.title=lang==='tr'?'Deniz · Sınıf için oyunlar':'Deniz · Games for the classroom';
   document.querySelectorAll('[data-i]').forEach(e=>{const v=t[e.dataset.i];if(typeof v==='string')e.textContent=v});
   const L=document.getElementById('lang');L.textContent=lang==='tr'?'EN':'TR';L.setAttribute('aria-label',lang==='tr'?'Switch to English':'Türkçeye geç');
+  window.RUN_TEXT={board:t.board2};
   document.getElementById('apps').innerHTML=PROJECTS.map(p=>`<a class="app" href="${p.url}" target="_blank" rel="noopener" style="--c:${p.color}">
     <span class="tile">${p.img?`<img src="img/${p.img}.webp" alt="" loading="lazy" width="1280" height="800">`:`<span class="art">${esc(p.art)}</span>`}${p.pill?`<span class="pill">${esc(p.pill[lang])}</span>`:''}</span>
     <h3>${esc(p.title)}</h3><p>${esc(p[lang])}</p></a>`).join('');
 }
-document.getElementById('lang').addEventListener('click',()=>{lang=lang==='tr'?'en':'tr';try{localStorage.setItem('lang',lang)}catch(e){}render()});
-render();
+document.getElementById('viewSwitch').addEventListener('click',()=>{try{localStorage.setItem('view','3d')}catch(e){}});
+function mirror(){const s=document.getElementById('b3dScreen');s.innerHTML='';const f=document.querySelector('#board .board-frame').cloneNode(true);f.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));s.appendChild(f)}
+document.getElementById('lang').addEventListener('click',()=>{lang=lang==='tr'?'en':'tr';try{localStorage.setItem('lang',lang)}catch(e){}render();mirror()});
+render();mirror();
 </script>
-<script type="module">
-const cover=document.getElementById('cover');
-import('./js/class.js').then(()=>setTimeout(()=>cover.classList.add('gone'),350))
-  .catch(()=>{cover.classList.add('gone');document.getElementById('story').style.height='auto';document.querySelector('.pin').style.height='60vh'});
-</script>
-<script nomodule>document.getElementById('cover').classList.add('gone')</script>
+<script type="module" src="js/run.js"></script>
+
 </body>
 </html>
