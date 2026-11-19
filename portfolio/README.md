@@ -1,9 +1,7 @@
 # Portfolio page (deniz-beryl.vercel.app)
 
-Two versions of the opening, built by the `deniz` Vercel project from this folder:
+Built by the `deniz` Vercel project from this folder.
 
-- `index.html` + `js/run.js`: watercolor 2D run. Scroll and Can runs to school,
-  touches the smart board, and the board turns 3D and becomes the projects section.
-- `3d.html` + `js/class.js`: low-poly 3D classroom (three.js), served at `/3d`.
-
-The switch button in the top bar moves between them and remembers the choice.
+- `index.html` + `js/class.js`: low-poly 3D classroom (three.js). Scroll through the
+  story, the smart board comes alive, then the games and projects appear.
+- `/3d` redirects to `/` for old links.
