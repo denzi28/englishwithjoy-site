@@ -103,13 +103,14 @@ addEventListener('resize', resize);
 /* ---------- the student (Can), painted frames ---------- */
 const CAN = {"cw": 350, "ch": 492, "cols": 4, "ax": 175, "ay": 486, "frames": {"run1": {"i": 0, "tipx": 130, "tipy": -241, "h": 442}, "run2": {"i": 1, "tipx": 137, "tipy": -213, "h": 419}, "run3": {"i": 2, "tipx": 91, "tipy": -394, "h": 447}, "run4": {"i": 3, "tipx": 151, "tipy": -243, "h": 443}, "run5": {"i": 4, "tipx": 131, "tipy": -249, "h": 447}, "run6": {"i": 5, "tipx": 131, "tipy": -210, "h": 417}, "run7": {"i": 6, "tipx": 94, "tipy": -11, "h": 449}, "run8": {"i": 7, "tipx": 146, "tipy": -246, "h": 445}, "idle1": {"i": 8, "tipx": 90, "tipy": -425, "h": 480}, "idle2": {"i": 9, "tipx": 90, "tipy": -425, "h": 480}, "crouch": {"i": 10, "tipx": 163, "tipy": -371, "h": 438}, "air": {"i": 11, "tipx": 151, "tipy": -371, "h": 472}, "touch1": {"i": 12, "tipx": 86, "tipy": -393, "h": 480}, "touch2": {"i": 13, "tipx": 150, "tipy": -369, "h": 480}, "touch3": {"i": 14, "tipx": 168, "tipy": -379, "h": 480}, "touch4": {"i": 15, "tipx": 160, "tipy": -381, "h": 480}}};
 const canImg = new Image(); canImg.src = 'img/can.webp';
+const RUNCYC = [1, 2, 3, 5, 6, 7];     // contact, down, passing x2, no double contacts
 const KH = 2.6;                       // Can's height in world units
 const tipU = CAN.frames.touch3.tipx / CAN.frames.touch3.h * KH, tipUy = -CAN.frames.touch3.tipy / CAN.frames.touch3.h * KH;
 let jumpAt = -9;
 function drawCan(g, name, x, y, u, lift = 0) {
   if (!canImg.complete || !canImg.naturalWidth) return;
   const f = CAN.frames[name], i = f.i, sx0 = (i % CAN.cols) * CAN.cw, sy0 = Math.floor(i / CAN.cols) * CAN.ch;
-  const k = KH * u / f.h;              // pixels per sprite pixel
+  const k = KH * u / 480;                 // pixels per sprite pixel
   g.imageSmoothingQuality = 'high';
   g.drawImage(canImg, sx0, sy0, CAN.cw, CAN.ch, x - CAN.ax * k, y - CAN.ay * k - lift * u, CAN.cw * k, CAN.ch * k);
 }
@@ -182,7 +183,7 @@ function paint(P, t) {
   const jt = t - jumpAt; let frame, lift = 0;
   if (jt < .75) { frame = jt < .12 || jt > .62 ? 'crouch' : 'air'; lift = jt > .12 && jt < .62 ? Math.sin((jt - .12) / .5 * Math.PI) * 1.1 : 0; }
   else if (P <= 0) frame = (t % 3.2) < .14 ? 'idle2' : 'idle1';
-  else if (P < .78) frame = 'run' + (1 + (Math.floor(kidX * 1.45) % 8));
+  else if (P < .78) frame = 'run' + RUNCYC[Math.floor(kidX * 1.45) % RUNCYC.length];
   else if (P < .792) frame = 'touch1'; else if (P < .804) frame = 'touch2'; else if (P < .9) frame = 'touch3'; else frame = 'touch4';
   const slope = P < .78 ? (groundY(kidX + .3) - groundY(kidX - .3)) / .6 : 0;
   g.save(); g.translate(sx(kidX), sy(groundY(kidX)) + u * .04); g.rotate(-Math.atan(slope) * .3); drawCan(g, frame, 0, 0, u, lift); g.restore();
@@ -220,7 +221,7 @@ function board3d(P, r) {
 const TL = [[0, 0], [.9, 0], [8.9, .78], [10.5, .84], [12.8, 1]];   // seconds -> story progress
 const runEase = k => k < .1 ? k * k / .18 : k > .9 ? 1 - (1 - k) * (1 - k) / .18 : (k - .05) / .9;   // ease in, steady run, ease out
 function progress(sec) { for (let i = 0; i < TL.length - 1; i++) { const [a, pa] = TL[i], [b, pb] = TL[i + 1]; if (sec <= b) { let k = cl((sec - a) / (b - a)); if (i === 1) k = runEase(k); return lerp(pa, pb, cl(k)); } } return 1; }
-let last = performance.now(), clock = 0, pS = 0, playing = false, started = 0, rect = null, raf = 0;
+let last = performance.now(), clock = 0, ic = 0, pS = 0, playing = false, started = 0, rect = null, raf = 0;
 const caps = [...document.querySelectorAll('.cap')], CAPS = [[0, .16], [.2, .4], [.46, .62], [.66, .8]];
 cv.addEventListener('click', () => { jumpAt = clock; });
 function finish() {
@@ -230,20 +231,21 @@ function finish() {
 }
 function frame(now) {
   raf = requestAnimationFrame(frame);
-  const dt = Math.min(.05, (now - last) / 1000); last = now; clock += dt;
+  const raw = (now - last) / 1000; last = now; clock += Math.min(.05, raw);
   if (!playing) return;
-  const sec = clock - started; pS = progress(sec);
+  ic += Math.min(.25, raw);            // intro time follows the real clock on slow devices
+  const sec = ic; pS = progress(sec);
   rect = paint(pS, clock);
   board3d(pS, rect);
-  CAPS.forEach(([a, b], i) => { const o = (i ? sm(a, a + .03, pS) : 1) * (1 - sm(b - .03, b, pS)); caps[i].style.opacity = o.toFixed(3); caps[i].style.transform = `translateY(${((1 - o) * 16).toFixed(1)}px)`; });
   if (sec > TL[TL.length - 1][0] + .25) finish();
 }
 function play() {
   if (RM) { run.classList.add('done'); return; }
   document.documentElement.classList.add('intro'); run.classList.remove('done'); scrollTo(0, 0);
-  playing = true; started = clock; last = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+  playing = true; ic = 0; last = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
 }
 $('#skip').addEventListener('click', finish);
+document.addEventListener('click', e => { const a = e.target.closest('a[href^="#"]'); if (playing && a && !a.classList.contains('name')) finish(); }, true);
 addEventListener('keydown', e => { if (playing && (e.key === 'Escape' || e.key === 'Enter')) finish(); });
 document.querySelector('.name').addEventListener('click', e => { e.preventDefault(); play(); });
 const start = () => { resize(); (canImg.decode ? canImg.decode().catch(() => {}) : Promise.resolve()).then(play); };
