@@ -18,6 +18,8 @@ header{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .logo{width:84px;height:84px;flex:none}
 header h1{margin:0;line-height:1}
 header p{margin:6px 0 0}
+.titlerow{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 18px}
+.school{line-height:1.1}
 .hero{display:grid;grid-template-columns:1.25fr 1fr;gap:0;margin:30px 0 8px;overflow:hidden}
 .hero .pic{position:relative;min-height:300px}
 .hero .pic img{width:100%;height:100%;object-fit:cover}
@@ -54,6 +56,7 @@ body{background-color:var(--bg);background-image:radial-gradient(rgba(31,26,46,.
 h1,h2,h3,.tab,.b,.play-big,.new,.badge{font-family:"Lilita One",Fredoka,sans-serif;font-weight:400;letter-spacing:.3px}
 header h1{font-size:clamp(42px,5.4vw,66px)}header h1 span{color:var(--pink);-webkit-text-stroke:0}
 header p{font-size:19px;color:var(--muted);font-weight:500}
+.school{font-family:"Lilita One",Fredoka,sans-serif;font-size:clamp(22px,2.6vw,34px);color:#6b4fd8;letter-spacing:.2px}
 .hero{text-decoration:none;color:inherit;background:#fff;border:4px solid var(--ink);border-radius:26px;box-shadow:10px 10px 0 var(--ink);transition:transform .15s,box-shadow .15s}
 .hero:hover{transform:translate(-2px,-2px);box-shadow:12px 12px 0 var(--ink)}
 .hero .pic{border-right:4px solid var(--ink)}
@@ -92,7 +95,7 @@ footer{color:var(--muted);font-weight:600}
 <div class="wrap">
   <header>
     <svg class="logo" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" fill="#ffcb3d" stroke="#2b2340" stroke-width="4"/><circle cx="30" cy="36" r="5" fill="#2b2340"/><circle cx="54" cy="36" r="5" fill="#2b2340"/><circle cx="22" cy="50" r="6" fill="#ff9fb4"/><circle cx="62" cy="50" r="6" fill="#ff9fb4"/><path d="M28 52 Q42 66 56 52" fill="none" stroke="#2b2340" stroke-width="4.5" stroke-linecap="round"/></svg>
-    <div><h1>English <span>with</span> Joy</h1><p>Interactive worksheets and smart-board games</p></div>
+    <div><div class="titlerow"><h1>English <span>with</span> Joy</h1><span class="school">Hamdullah Suphi Tanrıöver İlkokulu</span></div><p>Interactive worksheets and smart-board games</p></div>
   </header>
 
   <a class="hero" href="games/cans-birthday/" aria-label="Play Can's Birthday">
