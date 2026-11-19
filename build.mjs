@@ -12,7 +12,8 @@ const EN = [["Bu cihazda İngilizce ses bulunamadı. Sesler için ElevenLabs dos
  ["Bu tarayıcıda sesli okuma yok. Chrome ya da Edge ile açmayı deneyin.","This browser can't read aloud. Try Chrome or Edge."],
  ["Akıllı tahtada aç","Open on the smart board"],[">${ICON.print}Yazdır<",">${ICON.print}Print<"],
  ["PDF aracı yüklenemedi. Yazdır penceresinde “PDF olarak kaydet”i seçebilirsin.","The PDF tool didn't load. Use Print and choose “Save as PDF”."],
- ["PDF hazırlanıyor…","Making the PDF…"],["PDF oluşturulamadı. Yazdır → “PDF olarak kaydet” ile de alabilirsin.","Couldn't make the PDF. Use Print → “Save as PDF” instead."]];
+ ["PDF hazırlanıyor…","Making the PDF…"],
+ ["Back to Englishwithjoy","Back to Joy of English"],["English with Joy","Joy of English"],["Englishwithjoy","Joy of English"],["PDF oluşturulamadı. Yazdır → “PDF olarak kaydet” ile de alabilirsin.","Couldn't make the PDF. Use Print → “Save as PDF” instead."]];
 const sha1 = (b) => crypto.createHash('sha1').update(b).digest('hex');
 fs.rmSync(SITE, { recursive: true, force: true });
 for (const f of FILES) {

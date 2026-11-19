@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>English with Joy</title>
+<title>Joy of English</title>
 <meta name="description" content="Interactive worksheets and smart-board games for young learners of English.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 84'%3E%3Ccircle cx='42' cy='42' r='38' fill='%23ffcb3d' stroke='%232b2340' stroke-width='5'/%3E%3Ccircle cx='30' cy='36' r='5' fill='%232b2340'/%3E%3Ccircle cx='54' cy='36' r='5' fill='%232b2340'/%3E%3Cpath d='M28 52 Q42 66 56 52' fill='none' stroke='%232b2340' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,6 +88,33 @@ header p{font-size:19px;color:var(--muted);font-weight:500}
 footer{color:var(--muted);font-weight:600}
 @media (max-width:820px){.hero .pic{border-right:0;border-bottom:4px solid var(--ink)}}
 
+.today{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:24px;margin:28px 0 0}
+.clockcard{background:#fff;border:4px solid var(--ink);border-radius:22px;box-shadow:7px 7px 0 var(--ink);display:flex;align-items:center;gap:18px;padding:16px 20px;min-width:0}
+.clock{width:150px;height:150px;flex:none}
+.clock .face{fill:#fff6df;stroke:var(--ink);stroke-width:6}
+.clock .nums text{font-family:"Lilita One",Fredoka,sans-serif;font-size:22px;text-anchor:middle;fill:var(--ink)}
+.clock .ticks line{stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.clock .hand{stroke-linecap:round}.clock .h{stroke:var(--ink);stroke-width:9}.clock .m{stroke:var(--ink);stroke-width:6}.clock .s{stroke:var(--pink);stroke-width:3}
+.clock .pin{fill:var(--pink);stroke:var(--ink);stroke-width:3}
+.clocktxt{display:flex;flex-direction:column;gap:4px;min-width:0}
+.greet{font-family:"Lilita One",Fredoka,sans-serif;font-size:24px;color:#6b4fd8}
+.digital{font-family:"Lilita One",Fredoka,sans-serif;font-size:52px;line-height:1;font-variant-numeric:tabular-nums}
+.words{font-weight:700;font-size:19px}
+.date{color:var(--muted);font-weight:600;font-size:16px}
+.quote{margin:0;background:#ffe0ea;border:4px solid var(--ink);border-radius:22px;box-shadow:7px 7px 0 var(--ink);padding:18px 24px;display:flex;flex-direction:column;gap:8px;position:relative;min-width:0}
+.qlabel{align-self:flex-start;background:var(--yel);border:3px solid var(--ink);border-radius:12px;padding:2px 10px;font-family:"Lilita One",Fredoka,sans-serif;font-size:17px;transform:rotate(-2deg);box-shadow:3px 3px 0 var(--ink)}
+.quote blockquote{margin:0;font-family:"Lilita One",Fredoka,sans-serif;font-size:clamp(22px,2.2vw,30px);line-height:1.18;text-wrap:balance}
+.quote blockquote::before{content:"“"}.quote blockquote::after{content:"”"}
+.qtr{margin:0;color:var(--muted);font-size:17px;font-style:italic;line-height:1.35}
+.quote figcaption{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:700;margin-top:auto}
+.quote figcaption > span:first-child::before{content:"– "}
+.qbtns{display:flex;gap:10px}
+.qbtns button{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 14px;border:3px solid var(--ink);border-radius:12px;background:#fff;font-family:"Lilita One",Fredoka,sans-serif;font-size:18px;color:var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer}
+.qbtns button svg{width:20px;height:20px}
+.qbtns button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+@media (max-width:820px){.today{grid-template-columns:1fr}.clock{width:120px;height:120px}.digital{font-size:42px}}
+
+
 </style>
 </head>
 <body class="t-sticker">
@@ -95,8 +122,36 @@ footer{color:var(--muted);font-weight:600}
 <div class="wrap">
   <header>
     <svg class="logo" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" fill="#ffcb3d" stroke="#2b2340" stroke-width="4"/><circle cx="30" cy="36" r="5" fill="#2b2340"/><circle cx="54" cy="36" r="5" fill="#2b2340"/><circle cx="22" cy="50" r="6" fill="#ff9fb4"/><circle cx="62" cy="50" r="6" fill="#ff9fb4"/><path d="M28 52 Q42 66 56 52" fill="none" stroke="#2b2340" stroke-width="4.5" stroke-linecap="round"/></svg>
-    <div><div class="titlerow"><h1>English <span>with</span> Joy</h1><span class="school">Hamdullah Suphi Tanrıöver İlkokulu</span></div><p>Interactive worksheets and smart-board games</p></div>
+    <div><div class="titlerow"><h1>Joy <span>of</span> English</h1><span class="school">Hamdullah Suphi Tanrıöver İlkokulu</span></div><p>Interactive worksheets and smart-board games</p></div>
   </header>
+
+  <section class="today" aria-label="Today">
+    <div class="clockcard">
+      <svg class="clock" viewBox="0 0 200 200" aria-hidden="true">
+        <circle cx="100" cy="100" r="92" class="face"/>
+        <g class="nums"><text x="100.0" y="35.0">12</text><text x="136.0" y="44.6">1</text><text x="162.4" y="71.0">2</text><text x="172.0" y="107.0">3</text><text x="162.4" y="143.0">4</text><text x="136.0" y="169.4">5</text><text x="100.0" y="179.0">6</text><text x="64.0" y="169.4">7</text><text x="37.6" y="143.0">8</text><text x="28.0" y="107.0">9</text><text x="37.6" y="71.0">10</text><text x="64.0" y="44.6">11</text></g>
+        <g class="ticks"><line x1="100" y1="10" x2="100" y2="22" transform="rotate(0 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(6 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(12 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(18 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(24 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(30 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(36 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(42 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(48 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(54 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(60 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(66 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(72 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(78 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(84 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(90 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(96 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(102 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(108 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(114 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(120 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(126 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(132 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(138 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(144 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(150 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(156 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(162 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(168 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(174 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(180 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(186 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(192 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(198 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(204 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(210 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(216 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(222 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(228 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(234 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(240 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(246 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(252 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(258 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(264 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(270 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(276 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(282 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(288 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(294 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(300 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(306 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(312 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(318 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(324 100 100)"/><line x1="100" y1="10" x2="100" y2="22" transform="rotate(330 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(336 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(342 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(348 100 100)"/><line x1="100" y1="10" x2="100" y2="18" transform="rotate(354 100 100)"/></g>
+        <line id="hh" x1="100" y1="100" x2="100" y2="54" class="hand h"/>
+        <line id="mh" x1="100" y1="100" x2="100" y2="30" class="hand m"/>
+        <line id="sh" x1="100" y1="112" x2="100" y2="24" class="hand s"/>
+        <circle cx="100" cy="100" r="7" class="pin"/>
+      </svg>
+      <div class="clocktxt">
+        <div class="greet" id="greet">Hello!</div>
+        <div class="digital" id="digital">--:--</div>
+        <div class="words" id="words">What time is it?</div>
+        <div class="date" id="date"></div>
+      </div>
+    </div>
+    <figure class="quote">
+      <span class="qlabel">Quote of the day</span>
+      <blockquote id="qen"></blockquote>
+      <p class="qtr" id="qtr"></p>
+      <figcaption><span id="qwho"></span>
+        <span class="qbtns"><button type="button" id="qsay" aria-label="Listen in English"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Listen</button><button type="button" id="qnext" aria-label="Another quote"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span>
+      </figcaption>
+    </figure>
+  </section>
 
   <a class="hero" href="games/cans-birthday/" aria-label="Play Can's Birthday">
     <div class="pic"><img src="games/cans-birthday/poster.jpg" alt="Can's birthday party in the classroom, from the game's 3D story"><span class="badge">New story game</span></div>
@@ -185,13 +240,61 @@ footer{color:var(--muted);font-weight:600}
     </div>
   </section>
 
-  <footer>English with Joy · made for 3rd graders</footer>
+  <footer>Joy of English · made for 3rd graders</footer>
 </div>
 <script>
 const tabs = document.querySelectorAll(".tab");
 function pick(t){ tabs.forEach(b=>b.classList.toggle("on", b.dataset.t === t)); document.querySelectorAll("section").forEach(s=>s.classList.toggle("on", s.id === t)); }
 tabs.forEach(b=>b.addEventListener("click", ()=>{ pick(b.dataset.t); history.replaceState(null, "", b.dataset.t === "games" ? "#games" : "#"); }));
 if (location.hash === "#games") pick("games");
+
+// the clock: hands, digital time, the time in English words, the day and a greeting
+const NUM = ["twelve","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve"];
+const MIN = {5:"five",10:"ten",15:"quarter",20:"twenty",25:"twenty-five",30:"half"};
+function timeWords(h, m) {
+  const r = Math.round(m / 5) * 5, about = r !== m ? "about " : "";
+  let hh = h % 12, mm = r;
+  if (mm === 60) { mm = 0; hh = (hh + 1) % 12; }
+  if (mm === 0) return `It's ${about}${NUM[hh]} o'clock.`;
+  if (mm <= 30) return `It's ${about}${MIN[mm]} past ${NUM[hh]}.`;
+  return `It's ${about}${MIN[60 - mm]} to ${NUM[(hh + 1) % 12]}.`;
+}
+const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+function tick() {
+  const d = new Date(), h = d.getHours(), m = d.getMinutes(), s = d.getSeconds();
+  const rot = (el, deg) => el.setAttribute("transform", `rotate(${deg} 100 100)`);
+  rot(document.getElementById("hh"), (h % 12) * 30 + m * 0.5); rot(document.getElementById("mh"), m * 6 + s * 0.1); rot(document.getElementById("sh"), s * 6);
+  document.getElementById("digital").textContent = String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+  document.getElementById("words").textContent = timeWords(h, m);
+  document.getElementById("date").textContent = `Today is ${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]}.`;
+  document.getElementById("greet").textContent = h < 5 ? "Good night!" : h < 12 ? "Good morning!" : h < 18 ? "Good afternoon!" : h < 22 ? "Good evening!" : "Good night!";
+}
+tick(); setInterval(tick, 1000);
+// quote of the day: English first, Turkish below; a new one every day, and the arrow shows another
+const QUOTES = [
+  ["Little ladies, little gentlemen! You are all a rose, a star and a light of happiness for the future.", "Küçük hanımlar, küçük beyler! Sizler hepiniz geleceğin bir gülü, yıldızı, bir ikbal ışığısınız.", "Mustafa Kemal Atatürk"],
+  ["The first language we should learn is the language of kindness.", "İnsanın öğrenmesi gereken ilk dil, tatlı dildir.", "Barış Manço"],
+  ["One child, one teacher, one book and one pen can change the world.", "Bir çocuk, bir öğretmen, bir kitap ve bir kalem dünyayı değiştirebilir.", "Malala Yousafzai"],
+  ["Peace at home, peace in the world.", "Yurtta sulh, cihanda sulh.", "Mustafa Kemal Atatürk"],
+  ["The world is small, and all people are brothers and sisters.", "Dünya küçük, insanlar kardeş.", "Barış Manço"],
+  ["Imagination is more important than knowledge.", "Hayal gücü bilgiden daha önemlidir.", "Albert Einstein"],
+  ["Today's little ones are tomorrow's grown-ups.", "Bugünün küçükleri, yarının büyükleridir.", "Mustafa Kemal Atatürk"],
+  ["Every new baby is a new world.", "Her yeni doğan bebek, yeni bir dünya demek.", "Barış Manço"],
+  ["Alone we can do so little, together we can do so much.", "Tek başımıza çok az şey yapabiliriz, birlikte çok şey yapabiliriz.", "Helen Keller"],
+  ["Come, let's be friends and make things easy. Let's love and be loved.", "Gelin tanış olalım, işi kolay kılalım. Sevelim sevilelim.", "Yunus Emre"],
+  ["The truest guide in life is knowledge.", "Hayatta en hakiki mürşit ilimdir.", "Mustafa Kemal Atatürk"],
+];
+const day0 = new Date(new Date().getFullYear(), 0, 0), doy = Math.floor((new Date() - day0) / 864e5);
+let qi = doy % QUOTES.length;
+function showQuote() { const [en, tr, who] = QUOTES[qi]; document.getElementById("qen").textContent = en; document.getElementById("qtr").textContent = tr; document.getElementById("qwho").textContent = who; }
+showQuote();
+document.getElementById("qnext").addEventListener("click", () => { qi = (qi + 1) % QUOTES.length; showQuote(); });
+document.getElementById("qsay").addEventListener("click", () => {
+  if (!("speechSynthesis" in window)) return;
+  const u = new SpeechSynthesisUtterance(QUOTES[qi][0]); const v = speechSynthesis.getVoices().find((x) => /^en[-_]GB/i.test(x.lang)) || speechSynthesis.getVoices().find((x) => /^en/i.test(x.lang));
+  if (v) u.voice = v; u.lang = v ? v.lang : "en-GB"; u.rate = 0.85; speechSynthesis.cancel(); speechSynthesis.speak(u);
+});
 </script>
 </body>
 </html>
