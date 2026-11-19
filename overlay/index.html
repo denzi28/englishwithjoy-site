@@ -118,6 +118,122 @@ footer{color:var(--muted);font-weight:600}
 </style>
 </head>
 <body class="t-sticker">
+<style>
+/* the gate: a padlock and a key; push the key into the lock and the site opens from the keyhole */
+#gate{position:fixed;inset:0;z-index:100;background-color:var(--bg);background-image:radial-gradient(rgba(31,26,46,.13) 1.4px,transparent 1.5px);background-size:22px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(18px,4vh,40px);padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));touch-action:none;user-select:none;-webkit-user-select:none}
+#gate[hidden]{display:none!important}
+.gate-top{text-align:center;max-width:900px}
+.latin{margin:0;font-family:"Lilita One",Fredoka,sans-serif;font-size:clamp(30px,4.6vw,58px);line-height:1.08;color:var(--ink);text-wrap:balance;letter-spacing:.4px}
+.latin span{color:var(--pink)}
+.latin-en{margin:10px 0 0;font-size:clamp(12px,1.2vw,14px);font-weight:600;letter-spacing:.6px;color:var(--muted)}
+.gate-stage{position:relative;display:flex;align-items:center;justify-content:center;gap:clamp(30px,8vw,120px);flex-wrap:wrap}
+#lock{width:clamp(170px,22vw,240px);height:auto;overflow:visible;filter:drop-shadow(8px 8px 0 var(--ink))}
+#shackleG{transform-box:fill-box;transform-origin:100% 100%}
+#keyhole{transform-box:fill-box;transform-origin:50% 30%}
+#key{width:clamp(170px,20vw,230px);height:auto;border:0;background:none;padding:0;cursor:grab;touch-action:none;filter:drop-shadow(6px 6px 0 var(--ink));animation:keyWiggle 2.6s ease-in-out infinite}
+#key:active{cursor:grabbing}
+#key:focus-visible{outline:4px dashed var(--lila);outline-offset:8px;border-radius:12px}
+#key svg{display:block;width:100%;height:auto;pointer-events:none}
+.gate-hint{margin:0;font-family:"Lilita One",Fredoka,sans-serif;font-size:clamp(18px,1.8vw,24px);color:var(--ink);background:#fff;border:3px solid var(--ink);border-radius:14px;padding:6px 16px;box-shadow:4px 4px 0 var(--ink);transform:rotate(-1.5deg)}
+.gate-skip{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));background:none;border:0;color:var(--muted);font:600 15px "DM Sans",sans-serif;text-decoration:underline;cursor:pointer}
+.bit{position:fixed;z-index:101;pointer-events:none;border:3px solid var(--ink);border-radius:6px}
+@keyframes keyWiggle{0%,100%{transform:rotate(0)}8%{transform:rotate(-6deg)}16%{transform:rotate(5deg)}24%{transform:rotate(0)}}
+@media (max-width:700px){.gate-stage{flex-direction:column-reverse;gap:28px}}
+@media (prefers-reduced-motion:reduce){#key{animation:none}}
+</style>
+<div id="gate" role="dialog" aria-modal="true" aria-label="Unlock Joy of English">
+  <div class="gate-top">
+    <p class="latin" lang="la">Haec lectio <span>fures gaudii</span> depellat.</p>
+    <p class="latin-en">Let this lesson push the thieves of joy away.</p>
+  </div>
+  <div class="gate-stage">
+    <button id="key" type="button" aria-label="The key. Drag it into the lock, or press it to unlock the site.">
+      <svg viewBox="0 0 230 92" aria-hidden="true">
+        <g stroke="#1f1a2e" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M80 37 H212 V55 H196 V72 H180 V55 H166 V66 H152 V55 H80 Z" fill="#ffd23f"/>
+          <circle cx="46" cy="46" r="38" fill="#ffd23f"/>
+        </g>
+        <circle cx="46" cy="46" r="14" fill="#fff6df" stroke="#1f1a2e" stroke-width="7"/>
+        <path d="M24 32 q8 -10 20 -12" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".8"/>
+      </svg>
+    </button>
+    <svg id="lock" viewBox="0 0 200 250" aria-hidden="true">
+      <g id="shackleG"><path d="M48 118 V78 a52 52 0 0 1 104 0 V118" fill="none" stroke="#1f1a2e" stroke-width="22" stroke-linecap="round"/>
+      <path d="M48 118 V78 a52 52 0 0 1 104 0 V118" fill="none" stroke="#b9b2c9" stroke-width="9" stroke-linecap="round"/></g>
+      <rect x="16" y="108" width="168" height="130" rx="28" fill="#ff4f87" stroke="#1f1a2e" stroke-width="8"/>
+      <rect x="30" y="122" width="140" height="10" rx="5" fill="#fff" opacity=".35"/>
+      <path d="M100 150 m-17 0 a17 17 0 1 1 34 0 c0 8 -4 13 -8 16 l5 30 h-28 l5 -30 c-4 -3 -8 -8 -8 -16 z" fill="#1f1a2e" id="keyhole"/>
+      <path d="M150 196 l4 9 10 1 -7 7 2 10 -9 -5 -9 5 2 -10 -7 -7 10 -1z" fill="#ffd23f" stroke="#1f1a2e" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <p class="gate-hint" id="gateHint">Push the key into the lock!</p>
+  <button class="gate-skip" type="button" id="gateSkip">Skip</button>
+</div>
+<script>
+(() => {
+  const gate = document.getElementById("gate");
+  let seen = false; try { seen = sessionStorage.getItem("joyGate") === "1"; } catch (e) {}
+  if (seen) { gate.hidden = true; return; }
+  const root = document.documentElement; root.style.overflow = "hidden";
+  const key = document.getElementById("key"), lock = document.getElementById("lock"), hole = document.getElementById("keyhole");
+  const shackle = document.getElementById("shackleG"), wrap = document.querySelector(".wrap");
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let dx = 0, dy = 0, sx = 0, sy = 0, drag = false, done = false;
+  const tip = () => { const r = key.getBoundingClientRect(); return [r.right - r.width * 0.05, r.top + r.height * 0.5]; };
+  const target = () => { const r = hole.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height * 0.32]; };
+  const place = () => { key.style.transform = `translate(${dx}px, ${dy}px)`; };
+  key.addEventListener("pointerdown", (e) => { if (done) return; drag = true; key.setPointerCapture(e.pointerId); sx = e.clientX - dx; sy = e.clientY - dy; key.style.animation = "none"; key.moved = false; });
+  key.addEventListener("pointermove", (e) => { if (!drag) return; dx = e.clientX - sx; dy = e.clientY - sy; if (Math.hypot(dx, dy) > 6) key.moved = true; place();
+    const [a, b] = tip(), [c, d] = target(); lock.style.transform = Math.hypot(a - c, b - d) < 90 ? "scale(1.04)" : ""; });
+  key.addEventListener("pointerup", () => { if (!drag) return; drag = false; lock.style.transform = "";
+    const [a, b] = tip(), [c, d] = target();
+    if (Math.hypot(a - c, b - d) < 90 || !key.moved) unlock(); else springBack(); });
+  key.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); unlock(); } });
+  document.getElementById("gateSkip").addEventListener("click", () => finish(true));
+  function springBack() {
+    key.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "translate(0,0)" }], { duration: 450, easing: "cubic-bezier(.3,1.5,.5,1)" });
+    dx = dy = 0; place(); document.getElementById("gateHint").textContent = "Almost! Push it into the keyhole.";
+  }
+  async function unlock() {
+    if (done) return; done = true;
+    if (still) return finish(false);
+    // the key slides into the keyhole, turns, the shackle pops open
+    const [a, b] = tip(), [c, d] = target(); const fx = dx + (c - a), fy = dy + (d - b);
+    await key.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: `translate(${fx}px, ${fy}px)` }], { duration: 420, easing: "cubic-bezier(.2,.8,.2,1)", fill: "forwards" }).finished;
+    // it slips into the keyhole, the keyhole turns with a click, the shackle springs up and swings open
+    await key.animate([{ transform: `translate(${fx}px, ${fy}px) scale(1)`, opacity: 1 }, { transform: `translate(${fx + 14}px, ${fy}px) scale(.55)`, opacity: 0 }], { duration: 260, easing: "ease-in", fill: "forwards" }).finished;
+    await hole.animate([{ transform: "rotate(0)" }, { transform: "rotate(90deg)" }], { duration: 300, easing: "cubic-bezier(.5,0,.3,1.5)", fill: "forwards" }).finished;
+    lock.animate([{ transform: "scale(1)" }, { transform: "scale(1.07) rotate(-2deg)" }, { transform: "scale(1)" }], { duration: 420, easing: "ease-out" });
+    shackle.animate([{ transform: "translateY(0) rotate(0)" }, { transform: "translateY(-30px) rotate(0)", offset: 0.55 }, { transform: "translateY(-30px) rotate(-28deg)" }], { duration: 560, easing: "cubic-bezier(.3,1.4,.5,1)", fill: "forwards" });
+    burst(c, d);
+    await new Promise((ok) => setTimeout(ok, 650));
+    finish(false, c, d);
+  }
+  function burst(x, y) {
+    const cols = ["#ff4f87", "#ffd23f", "#38bdf8", "#4ade80", "#a78bfa", "#ff9f6b"];
+    for (let i = 0; i < 26; i++) {
+      const b = document.createElement("i"); b.className = "bit"; const s = 12 + Math.random() * 14;
+      Object.assign(b.style, { left: x - s / 2 + "px", top: y - s / 2 + "px", width: s + "px", height: s * (i % 3 ? 1 : 0.55) + "px", background: cols[i % cols.length], borderRadius: i % 4 ? "6px" : "50%" });
+      document.body.appendChild(b);
+      const ang = (i / 26) * Math.PI * 2 + Math.random() * 0.4, dist = 140 + Math.random() * 220;
+      b.animate([{ transform: "translate(0,0) rotate(0) scale(.4)", opacity: 1 }, { transform: `translate(${Math.cos(ang) * dist}px, ${Math.sin(ang) * dist + 60}px) rotate(${Math.random() * 540 - 270}deg) scale(1)`, opacity: 0 }],
+        { duration: 1100 + Math.random() * 500, easing: "cubic-bezier(.15,.7,.3,1)", fill: "forwards" }).finished.then(() => b.remove());
+    }
+  }
+  async function finish(quick, x, y) {
+    try { sessionStorage.setItem("joyGate", "1"); } catch (e) {}
+    if (quick || still || x == null) {
+      await gate.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, fill: "forwards" }).finished;
+    } else {
+      // the gate closes into the keyhole and the site grows out of it
+      const R = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      if (wrap) wrap.animate([{ transform: "scale(.94)", opacity: 0.4 }, { transform: "scale(1)", opacity: 1 }], { duration: 900, easing: "cubic-bezier(.2,.8,.2,1)" });
+      await gate.animate([{ clipPath: `circle(${R}px at ${x}px ${y}px)` }, { clipPath: `circle(0px at ${x}px ${y}px)` }], { duration: 850, easing: "cubic-bezier(.7,0,.3,1)", fill: "forwards" }).finished;
+    }
+    gate.hidden = true; root.style.overflow = "";
+  }
+})();
+</script>
 
 <div class="wrap">
   <header>
