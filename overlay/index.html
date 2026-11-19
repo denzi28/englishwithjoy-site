@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script src="/shared/voice.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Joy of English</title>
 <meta name="description" content="Interactive worksheets and smart-board games for young learners of English.">
@@ -20,12 +21,14 @@ header h1{margin:0;line-height:1}
 header p{margin:6px 0 0}
 .titlerow{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 18px}
 .school{line-height:1.1}
-.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:0;margin:30px 0 8px;overflow:hidden}
-.hero .pic{position:relative;min-height:300px}
-.hero .pic img{width:100%;height:100%;object-fit:cover}
-.hero .txt{padding:30px 32px;display:flex;flex-direction:column;gap:14px;justify-content:center;min-width:0}
+.heroes{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:30px 0 8px}
+.hero{display:flex;flex-direction:column;gap:0;overflow:hidden;min-width:0}
+.hero .pic{position:relative;aspect-ratio:16/9;overflow:hidden;background:#f4ead0}
+.hero .pic img,.hero .pic video{width:100%;height:100%;object-fit:cover;display:block}
+.hero .txt{padding:22px 24px 24px;display:flex;flex-direction:column;gap:12px;flex:1;min-width:0}
 .hero h2{margin:0;line-height:1.05;text-wrap:balance}
 .hero p{margin:0;line-height:1.45}
+.hero .play-big{margin-top:auto}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips span{white-space:nowrap}
 .tabs{display:flex;gap:14px;margin:34px 0 22px;flex-wrap:wrap}
@@ -49,7 +52,7 @@ section{display:none}section.on{display:block}
 .play-big{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;text-decoration:none}
 .play-big svg{width:26px;height:26px}
 footer{margin-top:48px;text-align:center}
-@media (max-width:820px){.hero{grid-template-columns:1fr}.hero .pic{min-height:200px}}
+@media (max-width:900px){.heroes{grid-template-columns:1fr}}
 
 :root{--bg:#fff6df;--ink:#1f1a2e;--muted:#5d5670;--pink:#ff4f87;--yel:#ffd23f;--blue:#38bdf8;--green:#4ade80;--lila:#a78bfa}
 body{background-color:var(--bg);background-image:radial-gradient(rgba(31,26,46,.13) 1.4px,transparent 1.5px);background-size:22px 22px;color:var(--ink);font-family:"DM Sans","Trebuchet MS",sans-serif;min-height:100vh}
@@ -59,11 +62,11 @@ header p{font-size:19px;color:var(--muted);font-weight:500}
 .school{font-family:"Lilita One",Fredoka,sans-serif;font-size:clamp(22px,2.6vw,34px);color:#6b4fd8;letter-spacing:.2px}
 .hero{text-decoration:none;color:inherit;background:#fff;border:4px solid var(--ink);border-radius:26px;box-shadow:10px 10px 0 var(--ink);transition:transform .15s,box-shadow .15s}
 .hero:hover{transform:translate(-2px,-2px);box-shadow:12px 12px 0 var(--ink)}
-.hero .pic{border-right:4px solid var(--ink)}
-.badge{position:absolute;left:16px;top:16px;background:var(--yel);border:3px solid var(--ink);font-size:22px;padding:6px 14px;border-radius:14px;transform:rotate(-4deg);box-shadow:4px 4px 0 var(--ink)}
+.hero .pic{border-bottom:4px solid var(--ink)}
+.badge{position:absolute;left:16px;top:16px;background:var(--yel);border:3px solid var(--ink);font-size:20px;padding:5px 13px;border-radius:14px;transform:rotate(-4deg);box-shadow:4px 4px 0 var(--ink);z-index:2}
 .hero .txt{background:linear-gradient(#fff,#fff) padding-box}
-.hero h2{font-size:clamp(40px,4.6vw,62px)}
-.hero p{font-size:18.5px;color:var(--muted)}
+.hero h2{font-size:clamp(30px,3.2vw,44px)}
+.hero p{font-size:17px;color:var(--muted)}
 .chips span{border:3px solid var(--ink);border-radius:12px;padding:4px 11px;font-weight:700;font-size:15px;background:#fff}
 .chips span:nth-child(5n+1){background:#ffe0ea}.chips span:nth-child(5n+2){background:#fff2b8}.chips span:nth-child(5n+3){background:#d8f3ff}.chips span:nth-child(5n+4){background:#dcfce7}.chips span:nth-child(5n){background:#ede7ff}
 .play-big{background:var(--pink);color:#fff;font-size:26px;padding:12px 24px;border:4px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink)}
@@ -115,6 +118,22 @@ footer{color:var(--muted);font-weight:600}
 @media (max-width:820px){.today{grid-template-columns:1fr}.clock{width:120px;height:120px}.digital{font-size:42px}}
 
 
+
+/* ===== unslop polish pass · unslop by Damir Sokolovsky (@heydamir), CC BY 4.0 ===== */
+/* One accent family: yellow for actions, pink for the story play buttons, ink for selection */
+.b.main,.c1 .b.main,.c2 .b.main,.c3 .b.main,.c4 .b.main{background:var(--yel);color:var(--ink)}
+.tab.on{background:var(--ink);color:#fff}
+.tab.on small{color:rgba(255,255,255,.72)}
+.school,.greet{color:var(--muted)}
+/* Quiet chips instead of a rainbow row */
+.chips span,.chips span:nth-child(n){background:#fff;border-width:2px;font-weight:600}
+/* No italic for emphasis */
+.qtr{font-style:normal}
+/* Motion: cards lift without tilting */
+.card:hover{transform:translate(-2px,-2px)}
+.hero:hover{transform:translate(-2px,-2px)}
+/* The single remaining "New" sticker sits straight and small */
+.new{transform:rotate(3deg);font-size:15px}
 </style>
 </head>
 <body class="t-sticker">
@@ -166,14 +185,16 @@ footer{color:var(--muted);font-weight:600}
       <path d="M150 196 l4 9 10 1 -7 7 2 10 -9 -5 -9 5 2 -10 -7 -7 10 -1z" fill="#ffd23f" stroke="#1f1a2e" stroke-width="3" stroke-linejoin="round"/>
     </svg>
   </div>
-  <p class="gate-hint" id="gateHint">Push the key into the lock!</p>
+  <p class="gate-hint" id="gateHint">Push the key into the lock</p>
   <button class="gate-skip" type="button" id="gateSkip">Skip</button>
 </div>
 <script>
 (() => {
   const gate = document.getElementById("gate");
-  let seen = false; try { seen = sessionStorage.getItem("joyGate") === "1"; } catch (e) {}
-  if (seen) { gate.hidden = true; return; }
+  const navEntry = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+  const isReload = navEntry ? navEntry.type === "reload" : false;
+  const fromInside = !isReload && document.referrer && document.referrer.startsWith(location.origin) && document.referrer !== location.href;
+  if (fromInside || location.hash === "#games") { gate.hidden = true; return; }
   const root = document.documentElement; root.style.overflow = "hidden";
   const key = document.getElementById("key"), lock = document.getElementById("lock"), hole = document.getElementById("keyhole");
   const shackle = document.getElementById("shackleG"), wrap = document.querySelector(".wrap");
@@ -192,7 +213,7 @@ footer{color:var(--muted);font-weight:600}
   document.getElementById("gateSkip").addEventListener("click", () => finish(true));
   function springBack() {
     key.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "translate(0,0)" }], { duration: 450, easing: "cubic-bezier(.3,1.5,.5,1)" });
-    dx = dy = 0; place(); document.getElementById("gateHint").textContent = "Almost! Push it into the keyhole.";
+    dx = dy = 0; place(); document.getElementById("gateHint").textContent = "Almost, push it into the keyhole";
   }
   async function unlock() {
     if (done) return; done = true;
@@ -253,7 +274,7 @@ footer{color:var(--muted);font-weight:600}
         <circle cx="100" cy="100" r="7" class="pin"/>
       </svg>
       <div class="clocktxt">
-        <div class="greet" id="greet">Hello!</div>
+        <div class="greet" id="greet">Hello</div>
         <div class="digital" id="digital">--:--</div>
         <div class="words" id="words">What time is it?</div>
         <div class="date" id="date"></div>
@@ -269,15 +290,27 @@ footer{color:var(--muted);font-weight:600}
     </figure>
   </section>
 
-  <a class="hero" href="games/cans-birthday/" aria-label="Play Can's Birthday">
-    <div class="pic"><img src="games/cans-birthday/poster.jpg" alt="Can's birthday party in the classroom, from the game's 3D story"><span class="badge">New story game</span></div>
-    <div class="txt">
-      <h2>Can’s Birthday</h2>
-      <p>A 3D story in ten scenes. Follow Can from home to his birthday party and answer the questions inside the story.</p>
-      <div class="chips"><span>Months</span><span>Birthdays &amp; ages</span><span>Colours</span><span>People at school</span><span>11 to 20</span></div>
-      <span class="play-big"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play the story</span>
-    </div>
-  </a>
+  <div class="heroes">
+    <a class="hero" href="games/cans-birthday/" aria-label="Play Can's Birthday">
+      <div class="pic"><video src="games/cans-birthday/promo.mp4" poster="games/cans-birthday/poster.jpg" autoplay loop muted playsinline preload="auto" aria-label="Can's birthday party in the classroom, from the game's 3D story"></video><span class="badge">Story game</span></div>
+      <div class="txt">
+        <h2>Can’s Birthday</h2>
+        <p>A 3D story in ten scenes. Follow Can from home to his birthday party and answer the questions inside the story.</p>
+        <div class="chips"><span>Months</span><span>Birthdays &amp; ages</span><span>Colours</span><span>People at school</span><span>11 to 20</span></div>
+        <span class="play-big"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play the story</span>
+      </div>
+    </a>
+
+    <a class="hero" href="games/where-is-the-pink-bag/" aria-label="Play Where Is the Pink Bag?">
+      <div class="pic"><video src="games/where-is-the-pink-bag/promo.mp4" poster="games/where-is-the-pink-bag/poster.jpg" autoplay loop muted playsinline preload="auto" aria-label="Can and Ece in the 3D school corridor looking for the pink bag"></video><span class="badge">New story game</span></div>
+      <div class="txt">
+        <h2>Where Is the Pink Bag?</h2>
+        <p>A 3D school story in seven rooms. Walk with Can, meet the people at school, count and find Ece’s pink bag.</p>
+        <div class="chips"><span>Colours</span><span>People at school</span><span>School rooms</span><span>1 to 12</span></div>
+        <span class="play-big"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play the story</span>
+      </div>
+    </a>
+  </div>
 
   <nav class="tabs">
     <button class="tab on" data-t="worksheets"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v4h4M9 11h6M9 14h6M9 17h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Worksheets</button>
@@ -288,7 +321,7 @@ footer{color:var(--muted);font-weight:600}
     <div class="sec-h"><span class="pill">Grade 3</span><h2>Theme 1: School Life</h2></div>
     <div class="grid">
       <article class="card c0">
-        <div class="thumb" style="--tb:#e6f6ee"><span class="new">NEW</span><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3"><circle cx="96" cy="58" r="15" fill="#fff"/><circle cx="72" cy="52" r="15" fill="#fff"/><circle cx="48" cy="58" r="15" fill="#fff"/><circle cx="24" cy="50" r="17" fill="#ffcb3d"/><path d="M18 34 Q14 22 8 22 M30 34 Q34 22 40 20" fill="none" stroke-linecap="round"/></g><circle cx="18" cy="48" r="2.6" fill="#2b2340"/><circle cx="30" cy="48" r="2.6" fill="#2b2340"/><path d="M18 56 Q24 62 30 56" fill="none" stroke="#2b2340" stroke-width="2.6" stroke-linecap="round"/><g font-family="Fredoka,sans-serif" font-weight="700" font-size="14" fill="#2b2340" text-anchor="middle"><text x="48" y="63">11</text><text x="72" y="57">12</text><text x="96" y="63">13</text></g></svg></div>
+        <div class="thumb" style="--tb:#e6f6ee"><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3"><circle cx="96" cy="58" r="15" fill="#fff"/><circle cx="72" cy="52" r="15" fill="#fff"/><circle cx="48" cy="58" r="15" fill="#fff"/><circle cx="24" cy="50" r="17" fill="#ffcb3d"/><path d="M18 34 Q14 22 8 22 M30 34 Q34 22 40 20" fill="none" stroke-linecap="round"/></g><circle cx="18" cy="48" r="2.6" fill="#2b2340"/><circle cx="30" cy="48" r="2.6" fill="#2b2340"/><path d="M18 56 Q24 62 30 56" fill="none" stroke="#2b2340" stroke-width="2.6" stroke-linecap="round"/><g font-family="Fredoka,sans-serif" font-weight="700" font-size="14" fill="#2b2340" text-anchor="middle"><text x="48" y="63">11</text><text x="72" y="57">12</text><text x="96" y="63">13</text></g></svg></div>
         <div class="info"><h3>How Many?</h3><p>Numbers 11–20, count the girls, boys and balloons at Can’s birthday party, then count and colour.</p>
           <div class="btns"><a class="b main" href="how-many/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Smart board</a><a class="b" href="how-many/print.html?pdf=1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a></div></div>
       </article>
@@ -314,22 +347,27 @@ footer{color:var(--muted);font-weight:600}
     <div class="sec-h"><span class="pill">Grade 3</span><h2>Smart-board games</h2></div>
     <div class="grid">
       <article class="card c2">
-        <div class="thumb" style="--tb:#fde6ec"><span class="new">NEW</span><img src="games/cans-birthday/poster.jpg" alt=""></div>
+        <div class="thumb" style="--tb:#fde6ec"><img src="games/cans-birthday/poster.jpg" alt=""></div>
         <div class="info"><h3>Can’s Birthday</h3><p>A 3D story game in ten scenes. Watch Can’s birthday and answer the questions inside the story: months, ages, colours and people at school.</p>
           <div class="btns"><a class="b main" href="games/cans-birthday/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
       </article>
+      <article class="card c1">
+        <div class="thumb" style="--tb:#ffe0ea"><span class="new">New</span><img src="games/where-is-the-pink-bag/poster.jpg" alt=""></div>
+        <div class="info"><h3>Where Is the Pink Bag?</h3><p>A 3D school story in seven rooms. Walk with Can, learn colours, meet the people at school and count from 1 to 12.</p>
+          <div class="btns"><a class="b main" href="games/where-is-the-pink-bag/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
+      </article>
       <article class="card c3">
-        <div class="thumb" style="--tb:#eaf6ff"><span class="new">NEW</span><svg viewBox="0 0 120 100" aria-hidden="true"><path d="M0 84 H120" stroke="#e9dfcf" stroke-width="10"/><g stroke="#2b2340" stroke-width="3" stroke-linejoin="round"><path d="M28 50 L48 50 L52 76 L24 76 Z" fill="#8e5cf7"/><circle cx="38" cy="34" r="11" fill="#ffd9b8"/><path d="M26 25 Q38 10 50 25 Z" fill="#5aa9e6"/><rect x="62" y="48" width="18" height="24" rx="6" fill="#5aa9e6"/><circle cx="71" cy="38" r="9" fill="#ffd9b8"/><path d="M14 30 Q38 -2 62 30 Z" fill="#f2547d" opacity=".9"/><rect x="92" y="20" width="16" height="40" rx="5" fill="#2b2340"/></g><circle cx="100" cy="30" r="5" fill="#e5484d"/><circle cx="100" cy="50" r="5" fill="#2fb36d"/><path d="M38 77 V92 M46 77 V92 M68 72 V92 M74 72 V92" stroke="#2b2340" stroke-width="3" stroke-linecap="round"/></svg></div>
+        <div class="thumb" style="--tb:#eaf6ff"><svg viewBox="0 0 120 100" aria-hidden="true"><path d="M0 84 H120" stroke="#e9dfcf" stroke-width="10"/><g stroke="#2b2340" stroke-width="3" stroke-linejoin="round"><path d="M28 50 L48 50 L52 76 L24 76 Z" fill="#8e5cf7"/><circle cx="38" cy="34" r="11" fill="#ffd9b8"/><path d="M26 25 Q38 10 50 25 Z" fill="#5aa9e6"/><rect x="62" y="48" width="18" height="24" rx="6" fill="#5aa9e6"/><circle cx="71" cy="38" r="9" fill="#ffd9b8"/><path d="M14 30 Q38 -2 62 30 Z" fill="#f2547d" opacity=".9"/><rect x="92" y="20" width="16" height="40" rx="5" fill="#2b2340"/></g><circle cx="100" cy="30" r="5" fill="#e5484d"/><circle cx="100" cy="50" r="5" fill="#2fb36d"/><path d="M38 77 V92 M46 77 V92 M68 72 V92 M74 72 V92" stroke="#2b2340" stroke-width="3" stroke-linecap="round"/></svg></div>
         <div class="info"><h3>Off to School with Grandma</h3><p>A story game. Help Can and Grandma walk to school: answer one question at every step (classroom objects, weather, colours, time).</p>
           <div class="btns"><a class="b main" href="games/off-to-school/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
       </article>
       <article class="card c4">
-        <div class="thumb" style="--tb:#e6f6ee"><span class="new">NEW</span><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3"><circle cx="22" cy="62" r="12" fill="#5aa9e6"/><circle cx="40" cy="62" r="12" fill="#ffcb3d"/><circle cx="58" cy="62" r="12" fill="#f2547d"/><circle cx="80" cy="54" r="18" fill="#6cc56a"/><path d="M74 37 Q70 26 64 26 M86 37 Q90 26 96 26" fill="none" stroke-linecap="round"/><path d="M104 40 C96 36 96 28 103 25 C110 28 110 36 104 40 Z" fill="#e5484d"/></g><circle cx="75" cy="52" r="2.6" fill="#2b2340"/><circle cx="86" cy="52" r="2.6" fill="#2b2340"/><path d="M75 60 Q80 65 86 60" fill="none" stroke="#2b2340" stroke-width="2.6" stroke-linecap="round"/><path d="M0 80 H120" stroke="#6cc56a" stroke-width="6"/></svg></div>
+        <div class="thumb" style="--tb:#e6f6ee"><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3"><circle cx="22" cy="62" r="12" fill="#5aa9e6"/><circle cx="40" cy="62" r="12" fill="#ffcb3d"/><circle cx="58" cy="62" r="12" fill="#f2547d"/><circle cx="80" cy="54" r="18" fill="#6cc56a"/><path d="M74 37 Q70 26 64 26 M86 37 Q90 26 96 26" fill="none" stroke-linecap="round"/><path d="M104 40 C96 36 96 28 103 25 C110 28 110 36 104 40 Z" fill="#e5484d"/></g><circle cx="75" cy="52" r="2.6" fill="#2b2340"/><circle cx="86" cy="52" r="2.6" fill="#2b2340"/><path d="M75 60 Q80 65 86 60" fill="none" stroke="#2b2340" stroke-width="2.6" stroke-linecap="round"/><path d="M0 80 H120" stroke="#6cc56a" stroke-width="6"/></svg></div>
         <div class="info"><h3>Feed the Caterpillar</h3><p>The whole class counts together. Every right answer to “How many…?” is an apple, until the caterpillar becomes a butterfly.</p>
           <div class="btns"><a class="b main" href="games/feed-the-caterpillar/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
       </article>
       <article class="card c0">
-        <div class="thumb" style="--tb:linear-gradient(90deg,#e3eeff 50%,#ffeddc 50%)"><span class="new">NEW</span><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3"><path d="M30 70 Q26 82 32 94 M90 70 Q94 82 88 94" fill="none" stroke-width="2"/><ellipse cx="30" cy="40" rx="22" ry="28" fill="#3b82f6"/><ellipse cx="90" cy="40" rx="22" ry="28" fill="#f97316"/></g><g font-family="Fredoka,sans-serif" font-weight="700" font-size="22" fill="#fff" text-anchor="middle"><text x="30" y="48">17</text><text x="90" y="48">7</text></g></svg></div>
+        <div class="thumb" style="--tb:linear-gradient(90deg,#e3eeff 50%,#ffeddc 50%)"><svg viewBox="0 0 120 100" aria-hidden="true"><g stroke="#2b2340" stroke-width="3"><path d="M30 70 Q26 82 32 94 M90 70 Q94 82 88 94" fill="none" stroke-width="2"/><ellipse cx="30" cy="40" rx="22" ry="28" fill="#3b82f6"/><ellipse cx="90" cy="40" rx="22" ry="28" fill="#f97316"/></g><g font-family="Fredoka,sans-serif" font-weight="700" font-size="22" fill="#fff" text-anchor="middle"><text x="30" y="48">17</text><text x="90" y="48">7</text></g></svg></div>
         <div class="info"><h3>Number Pop Race</h3><p>Two players listen to a number (seven or seventeen?) and race to pop the right balloon.</p>
           <div class="btns"><a class="b main" href="games/number-pop/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Play</a></div></div>
       </article>
@@ -384,7 +422,7 @@ function tick() {
   document.getElementById("digital").textContent = String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
   document.getElementById("words").textContent = timeWords(h, m);
   document.getElementById("date").textContent = `Today is ${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]}.`;
-  document.getElementById("greet").textContent = h < 5 ? "Good night!" : h < 12 ? "Good morning!" : h < 18 ? "Good afternoon!" : h < 22 ? "Good evening!" : "Good night!";
+  document.getElementById("greet").textContent = h < 5 ? "Good night" : h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : h < 22 ? "Good evening" : "Good night";
 }
 tick(); setInterval(tick, 1000);
 // quote of the day: English first, Turkish below; a new one every day, and the arrow shows another
