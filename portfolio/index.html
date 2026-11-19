@@ -815,7 +815,7 @@ const STARS=Array.from({length:240},()=>({x:rnd(),y:rnd()*.8,r:rnd()<.08?1.5:.45
 /* torn hole geometry: a jagged ellipse that opens as you scroll */
 const N=140,PH=[rnd()*6.3,rnd()*6.3,rnd()*6.3],J=[],RJ=[];
 for(let i=0;i<N;i++){J.push((rnd()-.5)*.07+(rnd()<.12?(rnd()-.5)*.13:0));RJ.push(4+rnd()*10+(rnd()<.15?rnd()*15:0))}
-function shape(t){const e1=1-Math.pow(1-t,3),e2=.5-.5*Math.cos(Math.PI*t),rx=22+232*e1,ry=4+176*e2,cy=-24+12*t,H=[],R=[],kk=.35+.65*Math.min(1,t*3);
+function shape(t){const e1=1-Math.pow(1-t,3),e2=.5-.5*Math.cos(Math.PI*t),rx=22+266*e1,ry=4+196*e2,cy=-20+10*t,H=[],R=[],kk=.35+.65*Math.min(1,t*3);
   for(let i=0;i<N;i++){const a=i/N*Math.PI*2,f=1+.1*Math.sin(3*a+PH[0])*t+.06*Math.sin(5*a+PH[1])+.04*Math.sin(8*a+PH[2])+J[i];
     const x=Math.cos(a)*rx*f,y=cy+Math.sin(a)*ry*f;H.push([x,y]);R.push([x+Math.cos(a)*RJ[i]*kk*1.1,y+Math.sin(a)*RJ[i]*kk])}
   return{H,R,rx,ry}}
@@ -878,7 +878,7 @@ function frame(t){
   const A=pts[pts.length-1],B=pts[0],jag=[];for(let k=1;k<6;k++)jag.push([lerp(A[0],B[0],k/6),lerp(A[1],B[1],k/6)+len*(.9+.1*k/6)+J[k*7]*80]);
   pull.setAttribute('d',dP([...pts,[A[0]-4,A[1]+len*.9],...jag,[B[0]+5,B[1]+len]]));
   /* painting inside: eye up-left, slowly settles and follows the pointer a little */
-  const s=(.47+.06*(1-tt))*(.98+.02*Math.sin(t*.0004)),ex=-130+mx*10,ey=-38+my*7;
+  const s=(.56+.07*(1-tt))*(.985+.015*Math.sin(t*.0004)),ex=-118+mx*10,ey=-34+my*7;
   art.setAttribute('x',(ex-EX*s).toFixed(1));art.setAttribute('y',(ey-EY*s).toFixed(1));art.setAttribute('width',(AW*s).toFixed(1));art.setAttribute('height',(AH*s).toFixed(1));
   svg.style.filter=`brightness(${(1-.2*night).toFixed(3)})`;
   clock(d,e);
