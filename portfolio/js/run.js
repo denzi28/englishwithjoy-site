@@ -80,18 +80,18 @@ function buildSprites() {
 }
 
 /* ---------- world ---------- */
-const GP = [[-10, 2.2], [9, 2.2], [26, 4.7], [35, 4.5], [49, 2.1], [57, 1.8], [63, 1.6], [400, 1.6]];
+const GP = [[-10, 2.2], [6, 2.2], [16.5, 4.6], [22, 4.4], [31, 2.1], [35.5, 1.8], [39.5, 1.6], [400, 1.6]];
 function groundY(x) { let i = 0; while (i < GP.length - 2 && x > GP[i + 1][0]) i++; const [x0, y0] = GP[i], [x1, y1] = GP[i + 1], t = cl((x - x0) / (x1 - x0));
-  return lerp(y0, y1, .5 - .5 * Math.cos(Math.PI * t)) + (x < 60 ? noise1(x * .35, 2) * .12 : 0); }
-const INSIDE = 64, BOARDX = 101;
+  return lerp(y0, y1, .5 - .5 * Math.cos(Math.PI * t)) + (x < 37 ? noise1(x * .5, 2) * .1 : 0); }
+const INSIDE = 40, BOARDX = 76;
 let BW = 6, BH = 3.4, BY = 3.4;   // board size in units, matched to the screen's aspect
 const FAR = [], MID = [], NEAR = [], FG = [];
-for (let x = -4; x < 140; x += 5 + rnd() * 6) FAR.push({ x, k: (rnd() * 3) | 0, y: rnd() * 1.5 });
-for (let x = 2; x < 60; x += 7 + rnd() * 8) MID.push({ x, t: rnd() < .35 ? 'arch' : 'stem', s: .8 + rnd() * .4 });
-for (let x = 3; x < 60; x += 2.5 + rnd() * 4) NEAR.push({ x, t: rnd() < .55 ? 'bush' : 'sprout', k: (rnd() * 3) | 0, s: .7 + rnd() * .5 });
-for (let x = 8; x < 58; x += 9 + rnd() * 9) FG.push({ x, k: (rnd() * 3) | 0 });
-const BLOCKS = [7, 15, 22, 31, 40, 47].map((x, i) => ({ x, y: groundY(x) + 2.4 + rnd() * 1.2, k: i, ph: rnd() * 6 }));
-const DESKS = [70, 77, 84, 91].map((x, i) => ({ x, k: i % 5 }));
+for (let x = -4; x < 100; x += 4 + rnd() * 5) FAR.push({ x, k: (rnd() * 3) | 0, y: rnd() * 1.5 });
+for (let x = 2; x < 37; x += 4.5 + rnd() * 5) MID.push({ x, t: rnd() < .35 ? 'arch' : 'stem', s: .8 + rnd() * .4 });
+for (let x = 3; x < 37; x += 1.8 + rnd() * 2.6) NEAR.push({ x, t: rnd() < .55 ? 'bush' : 'sprout', k: (rnd() * 3) | 0, s: .7 + rnd() * .5 });
+for (let x = 6; x < 36; x += 6 + rnd() * 6) FG.push({ x, k: (rnd() * 3) | 0 });
+const BLOCKS = [5, 10, 14.5, 19.5, 25, 30].map((x, i) => ({ x, y: groundY(x) + 2.4 + rnd() * 1.2, k: i, ph: rnd() * 6 }));
+const DESKS = [46, 53, 60, 67].map((x, i) => ({ x, k: i % 5 }));
 
 /* ---------- sizing ---------- */
 let W = 0, H = 0, DPR = 1;
@@ -100,41 +100,24 @@ function resize() { DPR = Math.min(devicePixelRatio || 1, 2); W = cv.clientWidth
   grainPat = ctx.createPattern(grain, 'repeat'); strokePat = ctx.createPattern(strokes, 'repeat'); }
 addEventListener('resize', resize);
 
-/* ---------- the student (Can) ---------- */
+/* ---------- the student (Can), painted frames ---------- */
+const CAN = {"cw": 350, "ch": 492, "cols": 4, "ax": 175, "ay": 486, "frames": {"run1": {"i": 0, "tipx": 130, "tipy": -241, "h": 442}, "run2": {"i": 1, "tipx": 137, "tipy": -213, "h": 419}, "run3": {"i": 2, "tipx": 91, "tipy": -394, "h": 447}, "run4": {"i": 3, "tipx": 151, "tipy": -243, "h": 443}, "run5": {"i": 4, "tipx": 131, "tipy": -249, "h": 447}, "run6": {"i": 5, "tipx": 131, "tipy": -210, "h": 417}, "run7": {"i": 6, "tipx": 94, "tipy": -11, "h": 449}, "run8": {"i": 7, "tipx": 146, "tipy": -246, "h": 445}, "idle1": {"i": 8, "tipx": 90, "tipy": -425, "h": 480}, "idle2": {"i": 9, "tipx": 90, "tipy": -425, "h": 480}, "crouch": {"i": 10, "tipx": 163, "tipy": -371, "h": 438}, "air": {"i": 11, "tipx": 151, "tipy": -371, "h": 472}, "touch1": {"i": 12, "tipx": 86, "tipy": -393, "h": 480}, "touch2": {"i": 13, "tipx": 150, "tipy": -369, "h": 480}, "touch3": {"i": 14, "tipx": 168, "tipy": -379, "h": 480}, "touch4": {"i": 15, "tipx": 160, "tipy": -381, "h": 480}}};
+const canImg = new Image(); canImg.src = 'img/can.webp';
+const KH = 2.6;                       // Can's height in world units
+const tipU = CAN.frames.touch3.tipx / CAN.frames.touch3.h * KH, tipUy = -CAN.frames.touch3.tipy / CAN.frames.touch3.h * KH;
 let jumpAt = -9;
-function drawKid(g, x, y, u, ph, speed, reach, t) {
-  // x,y = feet on screen, facing right
-  const bob = Math.abs(Math.sin(ph)) * .07 * speed, jt = t - jumpAt, jump = jt < .7 ? Math.sin(jt / .7 * Math.PI) * 1.1 : 0;
-  g.save(); g.translate(x, y - (bob + jump) * u); g.scale(u, u); g.lineCap = 'round'; g.lineJoin = 'round';
-  const leg = (a, k, col) => { g.save(); g.translate(0, -.62); g.rotate(a); g.strokeStyle = col; g.lineWidth = .17; g.beginPath(); g.moveTo(0, 0); g.lineTo(0, .3); g.rotate(k); g.lineTo(0, .6); g.stroke();
-    g.fillStyle = '#fdf6ef'; g.beginPath(); g.ellipse(.07, .62, .14, .07, 0, 0, 7); g.fill(); g.restore(); };
-  const arm = (a, col, len = .42) => { g.save(); g.translate(.02, -1.08); g.rotate(a); g.strokeStyle = col; g.lineWidth = .14; g.beginPath(); g.moveTo(0, 0); g.lineTo(0, len); g.stroke();
-    g.fillStyle = '#e9be9b'; g.beginPath(); g.arc(0, len + .04, .075, 0, 7); g.fill(); g.restore(); };
-  const s = Math.sin(ph) * speed;
-  leg(s * .8, Math.max(0, -s) * 1.1 + .1 * speed, '#2a3a6b');
-  arm(-s * .9 + .2 * speed, '#4b86d9');
-  // backpack
-  g.fillStyle = '#ef8a3a'; g.beginPath(); g.roundRect(-.42, -1.25, .3, .52, .1); g.fill(); g.fillStyle = 'rgba(0,0,0,.12)'; g.fillRect(-.42, -.86, .3, .05);
-  // body
-  g.fillStyle = '#5aa7ff'; g.beginPath(); g.roundRect(-.2, -1.25, .42, .66, .16); g.fill();
-  g.fillStyle = 'rgba(255,255,255,.85)'; g.fillRect(-.2, -1.05, .42, .06); g.fillRect(-.2, -.86, .42, .06);
-  leg(-s * .8, Math.max(0, s) * 1.1 + .1 * speed, '#33478a');
-  // head
-  g.fillStyle = '#e9be9b'; g.beginPath(); g.arc(.04, -1.52, .3, 0, 7); g.fill();
-  g.fillStyle = '#2a1d16'; g.beginPath(); g.arc(.0, -1.6, .31, Math.PI * .72, Math.PI * 2.05); g.quadraticCurveTo(.22, -1.72, -.05, -1.66); g.fill();
-  g.fillStyle = '#1c2340'; g.beginPath(); g.arc(.21, -1.5, .042, 0, 7); g.fill();
-  g.fillStyle = 'rgba(240,110,130,.45)'; g.beginPath(); g.arc(.2, -1.39, .07, 0, 7); g.fill();
-  g.strokeStyle = '#7a2f2f'; g.lineWidth = .03; g.beginPath(); g.arc(.22, -1.4, .07, .2, 1.6); g.stroke();
-  // front arm: swings while running, reaches for the board at the end
-  arm(lerp(s * .9 - .2 * speed, -2.35, reach), '#4b86d9', lerp(.42, .5, reach));
-  g.restore();
+function drawCan(g, name, x, y, u, lift = 0) {
+  if (!canImg.complete || !canImg.naturalWidth) return;
+  const f = CAN.frames[name], i = f.i, sx0 = (i % CAN.cols) * CAN.cw, sy0 = Math.floor(i / CAN.cols) * CAN.ch;
+  const k = KH * u / f.h;              // pixels per sprite pixel
+  g.imageSmoothingQuality = 'high';
+  g.drawImage(canImg, sx0, sy0, CAN.cw, CAN.ch, x - CAN.ax * k, y - CAN.ay * k - lift * u, CAN.cw * k, CAN.ch * k);
 }
-
 /* ---------- painting ---------- */
 function paint(P, t) {
   const g = ctx, u = U * DPR, w = cv.width, h = cv.height;
-  const runP = sm(0, .78, P) * .9 + cl(P / .78) * .1;
-  const kidX = lerp(3, BOARDX - BW / 2 - .7, runP);
+  const runP = cl(P / .78);
+  const kidX = lerp(3, BOARDX - BW / 2 - tipU + .06, runP);
   const viewU = W / U, camX = cl(kidX - viewU * .36, -2, BOARDX + BW / 2 + .6 - viewU);
   const sx = wx => (wx - camX) * u, sy = wy => h - wy * u;
   const inside = sm(INSIDE - 6, INSIDE + 2, camX + viewU * .5);
@@ -158,7 +141,7 @@ function paint(P, t) {
     g.save(); g.beginPath(); g.rect(x0, 0, w - x0 + 9999, h); g.clip();
     grd = g.createLinearGradient(0, 0, 0, h); grd.addColorStop(0, '#f6e7d6'); grd.addColorStop(1, '#efd6c4'); g.fillStyle = grd; g.fillRect(x0, 0, w - x0, h);
     g.globalAlpha = .35; g.fillStyle = strokePat; g.fillRect(x0, 0, w - x0, h); g.globalAlpha = 1;
-    for (const wx of [68, 76, 84, 92]) { const x = sx(wx); if (x > -u * 4 && x < w + u) { g.drawImage(S.window, x - S.window.width / 2, sy(7.6));
+    for (const wx of [44, 52, 60, 68]) { const x = sx(wx); if (x > -u * 4 && x < w + u) { g.drawImage(S.window, x - S.window.width / 2, sy(7.6));
       const lg = g.createLinearGradient(x, sy(7), x + u * 3, sy(1.6)); lg.addColorStop(0, 'rgba(255,240,230,.55)'); lg.addColorStop(1, 'rgba(255,240,230,0)'); g.fillStyle = lg;
       g.beginPath(); g.moveTo(x - u * 1.2, sy(7.2)); g.lineTo(x + u * 1.2, sy(7.2)); g.lineTo(x + u * 3.6, sy(1.6)); g.lineTo(x + u * .6, sy(1.6)); g.fill(); } }
     for (let i = 0; i < 40; i++) { const wx = INSIDE + i * .9, x = sx(wx); if (x < -u || x > w + u) continue; const sag = Math.sin((i % 12) / 11 * Math.PI) * .35; g.drawImage(S.flag[i % 5], x, sy(8.9 - sag)); }
@@ -167,7 +150,7 @@ function paint(P, t) {
     const bx = sx(BOARDX - BW / 2), by = sy(BY + BH / 2), bw = BW * u, bh = BH * u;
     g.fillStyle = 'rgba(70,40,50,.18)'; g.beginPath(); g.roundRect(bx + u * .12, by + u * .18, bw, bh, u * .25); g.fill();
     wash(g, rectPts(bx - u * .15, by - u * .15, bw + u * .3, bh + u * .3, u * .28, 16), '#3a3550', '#1d1a2a', 90, .95);
-    const glow = sm(.8, .83, P);
+    const glow = sm(.805, .82, P);
     grd = g.createLinearGradient(bx, by, bx + bw, by + bh); grd.addColorStop(0, lerp(0, 1, glow) > .5 ? '#3d4f8f' : '#2b2f48'); grd.addColorStop(1, '#232740');
     g.fillStyle = grd; g.beginPath(); g.roundRect(bx, by, bw, bh, u * .14); g.fill();
     g.fillStyle = 'rgba(255,255,255,.07)'; g.beginPath(); g.moveTo(bx, by); g.lineTo(bx + bw * .45, by); g.lineTo(bx + bw * .2, by + bh); g.lineTo(bx, by + bh); g.fill();
@@ -196,11 +179,15 @@ function paint(P, t) {
     const kidIm = S.kid[d.k], hop = sm(.835, .86, P) * Math.abs(Math.sin(t * 7 + d.k)) * u * .35;
     g.drawImage(kidIm, x - u * .2, gy - kidIm.height - u * .05 - hop); g.drawImage(S.desk, x + u * .4, gy - S.desk.height); }
   // the student
-  const gy = groundY(kidX), speed = (P > .005 && P < .78) ? 1 : 0, reach = sm(.79, .82, P) * (1 - sm(.9, .95, P));
-  const slope = (groundY(kidX + .3) - groundY(kidX - .3)) / .6;
-  g.save(); g.translate(sx(kidX), sy(gy)); g.rotate(-Math.atan(slope) * .35); drawKid(g, 0, 0, u * 1.25, kidX * 2.0, speed, reach, t); g.restore();
+  const jt = t - jumpAt; let frame, lift = 0;
+  if (jt < .75) { frame = jt < .12 || jt > .62 ? 'crouch' : 'air'; lift = jt > .12 && jt < .62 ? Math.sin((jt - .12) / .5 * Math.PI) * 1.1 : 0; }
+  else if (P <= 0) frame = (t % 3.2) < .14 ? 'idle2' : 'idle1';
+  else if (P < .78) frame = 'run' + (1 + (Math.floor(kidX * 1.45) % 8));
+  else if (P < .792) frame = 'touch1'; else if (P < .804) frame = 'touch2'; else if (P < .9) frame = 'touch3'; else frame = 'touch4';
+  const slope = P < .78 ? (groundY(kidX + .3) - groundY(kidX - .3)) / .6 : 0;
+  g.save(); g.translate(sx(kidX), sy(groundY(kidX)) + u * .04); g.rotate(-Math.atan(slope) * .3); drawCan(g, frame, 0, 0, u, lift); g.restore();
   // touch ripple
-  const rp = sm(.815, .87, P); if (rp > 0 && rp < 1) { const x = sx(BOARDX - BW / 2 + .5), y = sy(BY - .2); g.strokeStyle = `rgba(255,236,170,${1 - rp})`; g.lineWidth = u * .08 * (1 - rp); g.beginPath(); g.arc(x, y, rp * u * 3, 0, 7); g.stroke(); }
+  const rp = sm(.806, .86, P); if (rp > 0 && rp < 1) { const x = sx(kidX + tipU), y = sy(1.6 + tipUy); g.strokeStyle = `rgba(255,236,170,${1 - rp})`; g.lineWidth = u * .08 * (1 - rp); g.beginPath(); g.arc(x, y, rp * u * 3, 0, 7); g.stroke(); }
   // foreground silhouettes passing in front
   for (const f of FG) { const x = (f.x - camX * 1.35) * u; const im = S.bush[f.k]; if (x < -im.width * 2 || x > w + im.width) continue; g.globalAlpha = .55; g.drawImage(im, x, h - im.height * 1.1, im.width * 2, im.height * 2); }
   g.globalAlpha = 1;
@@ -229,23 +216,36 @@ function board3d(P, r) {
   B.style.setProperty('--glow', (sm(0, .2, q) * (1 - sm(.4, .7, q))).toFixed(3));
 }
 
-/* ---------- loop ---------- */
-let pS = 0, last = performance.now(), clock = 0, vis = true, rect = null;
-new IntersectionObserver(es => vis = es[0].isIntersecting).observe(run);
+/* ---------- the intro plays by itself ---------- */
+const TL = [[0, 0], [.9, 0], [8.9, .78], [10.5, .84], [12.8, 1]];   // seconds -> story progress
+const runEase = k => k < .1 ? k * k / .18 : k > .9 ? 1 - (1 - k) * (1 - k) / .18 : (k - .05) / .9;   // ease in, steady run, ease out
+function progress(sec) { for (let i = 0; i < TL.length - 1; i++) { const [a, pa] = TL[i], [b, pb] = TL[i + 1]; if (sec <= b) { let k = cl((sec - a) / (b - a)); if (i === 1) k = runEase(k); return lerp(pa, pb, cl(k)); } } return 1; }
+let last = performance.now(), clock = 0, pS = 0, playing = false, started = 0, rect = null, raf = 0;
 const caps = [...document.querySelectorAll('.cap')], CAPS = [[0, .16], [.2, .4], [.46, .62], [.66, .8]];
-cv.addEventListener('click', e => { if (!rect) return; jumpAt = clock; });
+cv.addEventListener('click', () => { jumpAt = clock; });
+function finish() {
+  playing = false; cancelAnimationFrame(raf);
+  document.documentElement.classList.remove('intro'); run.classList.add('done'); scrollTo(0, 0);
+  document.getElementById('board').focus({ preventScroll: true });
+}
 function frame(now) {
-  requestAnimationFrame(frame);
+  raf = requestAnimationFrame(frame);
   const dt = Math.min(.05, (now - last) / 1000); last = now; clock += dt;
-  const r = run.getBoundingClientRect(), raw = cl(-r.top / Math.max(1, r.height - innerHeight));
-  pS = (RM || raw >= .999) ? raw : pS + (raw - pS) * Math.min(1, dt * 7);
-  document.documentElement.classList.toggle('board-live', raw >= .999);
-  if (!vis) return;
+  if (!playing) return;
+  const sec = clock - started; pS = progress(sec);
   rect = paint(pS, clock);
   board3d(pS, rect);
   CAPS.forEach(([a, b], i) => { const o = (i ? sm(a, a + .03, pS) : 1) * (1 - sm(b - .03, b, pS)); caps[i].style.opacity = o.toFixed(3); caps[i].style.transform = `translateY(${((1 - o) * 16).toFixed(1)}px)`; });
-  $('#hint').style.opacity = (1 - sm(.005, .04, pS)).toFixed(2);
+  if (sec > TL[TL.length - 1][0] + .25) finish();
 }
-const start = () => { document.documentElement.classList.add('js-pin'); resize(); requestAnimationFrame(frame); };
+function play() {
+  if (RM) { run.classList.add('done'); return; }
+  document.documentElement.classList.add('intro'); run.classList.remove('done'); scrollTo(0, 0);
+  playing = true; started = clock; last = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+}
+$('#skip').addEventListener('click', finish);
+addEventListener('keydown', e => { if (playing && (e.key === 'Escape' || e.key === 'Enter')) finish(); });
+document.querySelector('.name').addEventListener('click', e => { e.preventDefault(); play(); });
+const start = () => { resize(); (canImg.decode ? canImg.decode().catch(() => {}) : Promise.resolve()).then(play); };
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(start, start);
-window.__run = { get p() { return pS; } };
+window.__run = { get p() { return pS; }, play, finish };

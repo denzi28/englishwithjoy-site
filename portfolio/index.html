@@ -5,7 +5,7 @@
 <script>try{if(localStorage.getItem("view")==="3d"&&!/[?&]v=/.test(location.search))location.replace("/3d"+location.hash)}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deniz · Sınıf için oyunlar</title>
-<meta name="description" content="Deniz'in akıllı tahta oyunları, sınıf araçları ve projeleri. Aşağı kaydır, ders başlasın.">
+<meta name="description" content="Deniz'in akıllı tahta oyunları, sınıf araçları ve projeleri.">
 <meta property="og:title" content="Deniz · Sınıf için oyunlar">
 <meta property="og:description" content="Akıllı tahta oyunları, sınıf araçları ve projeler.">
 <meta property="og:image" content="img/english-with-joy.webp">
@@ -55,8 +55,11 @@ h1,h2,h3{font-family:var(--disp);font-variation-settings:"SOFT" 100;font-weight:
 .lang:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
 
 /* the watercolor run */
-#run{position:relative;height:900vh}
-.pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--paper);perspective:1600px}
+#run{position:fixed;inset:0;z-index:30;transition:opacity .45s}
+#run.done{opacity:0;visibility:hidden;pointer-events:none}
+html.intro{overflow:hidden}
+.pin{position:absolute;inset:0;overflow:hidden;background:var(--paper);perspective:1600px}
+.skip{position:absolute;right:clamp(16px,3vw,32px);bottom:clamp(18px,4vh,32px);z-index:6}
 #paint{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:pointer}
 .pin::after{content:"";position:absolute;left:0;bottom:0;width:min(860px,100%);height:min(480px,70%);z-index:2;pointer-events:none;
   background:radial-gradient(80% 80% at 0% 100%,rgba(247,239,232,.9),rgba(247,239,232,.5) 45%,rgba(247,239,232,0) 75%)}
@@ -154,7 +157,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <body>
 
 <header class="bar">
-  <a class="name" href="#run" aria-label="Deniz, başa dön">
+  <a class="name" href="#run" aria-label="Deniz, girişi yeniden oynat">
     <span class="face" aria-hidden="true"><svg viewBox="0 0 26 26"><circle cx="9" cy="11" r="2.2" fill="#1c2340"/><circle cx="17" cy="11" r="2.2" fill="#1c2340"/><path d="M8 16q5 4.5 10 0" stroke="#1c2340" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></span>
     <b>Deniz</b>
   </a>
@@ -173,17 +176,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     <div class="pin">
       <canvas id="paint" role="img" aria-label="Suluboya bir dünyada okula koşan bir öğrenci. Kaydırdıkça sınıfa varıp akıllı tahtaya dokunuyor."></canvas>
       <div class="caps" aria-live="polite">
-        <div class="cap"><h2 data-i="r1.h">Her ders bir yolculukla başlar.</h2><p data-i="r1.p">Kaydır, Can okula koşsun. Ona tıklarsan zıplar.</p></div>
+        <div class="cap"><h2 data-i="r1.h">Her ders bir yolculukla başlar.</h2><p data-i="r1.p">Can okula koşuyor. Ona tıklarsan zıplar.</p></div>
         <div class="cap"><h2 data-i="r2.h">Yol biraz yokuş.</h2><p data-i="r2.p">Ama alfabe blokları yolu gösteriyor.</p></div>
         <div class="cap"><h2 data-i="r3.h">Okul kapısı açık.</h2><p data-i="r3.p">Sınıf toplanmış, tahta bekliyor.</p></div>
         <div class="cap"><h2 data-i="r4.h">Bir dokunuş yeter.</h2><p data-i="r4.p">Tahtaya dokununca benim dünyam açılıyor.</p></div>
       </div>
       <div class="b3d" id="b3d" aria-hidden="true" inert><div class="bface"><div class="screen board" id="b3dScreen"></div></div><i class="side l"></i><i class="side r"></i><i class="side t"></i><i class="side b"></i></div>
-      <div class="hint" id="hint"><span data-i="hint">Aşağı kaydır</span><span class="chalk"></span></div>
+      <button class="btn small ghost skip" id="skip" type="button" data-i="skip">Geç</button>
     </div>
   </section>
 
-  <section class="board" id="board" aria-labelledby="board-t">
+  <section class="board" id="board" aria-labelledby="board-t" tabindex="-1">
     <div class="board-frame">
       <h2 id="board-t" data-i="board.t">Oyunlar ve projeler</h2>
       <p class="sub" data-i="board.sub">Hepsi bir sınıfta denendi, hepsi tek tek elle kodlandı. Birine dokun, açılsın.</p>
@@ -260,7 +263,7 @@ const PROJECTS=[
 window.BOARD_TILES=PROJECTS;
 
 const I18N={
- tr:{'nav.board':'Oyunlar ve projeler','nav.about':'Hakkımda','nav.contact':'İletişim','nav.cta':"Can's Birthday'i oyna",'nav.view':'3D sürüm',board2:'Dokun','r1.h':'Her ders bir yolculukla başlar.','r1.p':'Kaydır, Can okula koşsun. Ona tıklarsan zıplar.','r2.h':'Yol biraz yokuş.','r2.p':'Ama alfabe blokları yolu gösteriyor.','r3.h':'Okul kapısı açık.','r3.p':'Sınıf toplanmış, tahta bekliyor.','r4.h':'Bir dokunuş yeter.','r4.p':'Tahtaya dokununca benim dünyam açılıyor.',loading:'Sınıf hazırlanıyor',hint:'Aşağı kaydır',
+ tr:{'nav.board':'Oyunlar ve projeler','nav.about':'Hakkımda','nav.contact':'İletişim','nav.cta':"Can's Birthday'i oyna",'nav.view':'3D sürüm',board2:'Dokun','r1.h':'Her ders bir yolculukla başlar.','r1.p':'Can okula koşuyor. Ona tıklarsan zıplar.',skip:'Geç','r2.h':'Yol biraz yokuş.','r2.p':'Ama alfabe blokları yolu gösteriyor.','r3.h':'Okul kapısı açık.','r3.p':'Sınıf toplanmış, tahta bekliyor.','r4.h':'Bir dokunuş yeter.','r4.p':'Tahtaya dokununca benim dünyam açılıyor.',loading:'Sınıf hazırlanıyor',hint:'Aşağı kaydır',
   'c1.h':'Burası bir sınıf.','c1.p':'Ben de bu sınıfın akıllı tahtası için oyunlar yapıyorum. Aşağı kaydır, ders başlasın.',
   'c2.h':'Tahta açılıyor.','c2.p':'Bugünün oyunu Months Race. Herkes tahtaya dönüyor.',
   'c3.h':'Soru tahtada, eller havada.','c3.p':'Herkes cevabı biliyor. Ya da bildiğini sanıyor.',
@@ -276,7 +279,7 @@ const I18N={
   'contact.t':'Birlikte bir oyun yapalım.','contact.p':'Sınıfın için bir oyun mu lazım, ya da bir fikrin mi var? Yaz bana.',
   foot:"Elle kodlandı, Vercel'de yayında. Kapak sahnesi three.js ile.",
   board:{game:'Months Race',q:'What comes after March?',opts:['May','April','June'],ok:'Great job!',launch:'Oyunlar ve projeler',launchSub:'Birine dokun, açılsın'}},
- en:{'nav.board':'Games and projects','nav.about':'About','nav.contact':'Contact','nav.cta':"Play Can's Birthday",'nav.view':'3D version',board2:'Touch','r1.h':'Every lesson starts with a journey.','r1.p':'Scroll and Can runs to school. Click him and he jumps.','r2.h':'The road goes uphill.','r2.p':'The alphabet blocks show the way.','r3.h':'The school door is open.','r3.p':'The class is ready, and the board is waiting.','r4.h':'One touch is enough.','r4.p':'Touch the board and my world opens.',loading:'Setting up the classroom',hint:'Scroll down',
+ en:{'nav.board':'Games and projects','nav.about':'About','nav.contact':'Contact','nav.cta':"Play Can's Birthday",'nav.view':'3D version',board2:'Touch','r1.h':'Every lesson starts with a journey.','r1.p':'Can is running to school. Click him and he jumps.',skip:'Skip','r2.h':'The road goes uphill.','r2.p':'The alphabet blocks show the way.','r3.h':'The school door is open.','r3.p':'The class is ready, and the board is waiting.','r4.h':'One touch is enough.','r4.p':'Touch the board and my world opens.',loading:'Setting up the classroom',hint:'Scroll down',
   'c1.h':'This is a classroom.','c1.p':'I make games for its smart board. Scroll down and the lesson begins.',
   'c2.h':'The board lights up.','c2.p':"Today's game is Months Race. Everyone turns around.",
   'c3.h':'A question, and every hand goes up.','c3.p':'Everyone knows the answer. Or thinks they do.',
