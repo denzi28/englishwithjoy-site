@@ -798,8 +798,8 @@ const istHour=d=>((d.getTime()/36e5+3)%24+24)%24;
 
 /* how the photo is graded at each sun height: tint (multiply) top/bottom, tint strength, photo filter */
 const K=[
- {e:-90,t:'#0b1236',b:'#1b2148',a:.9, br:.5, sa:.55,se:0},
- {e:-13,t:'#0b1236',b:'#1b2148',a:.9, br:.5, sa:.55,se:0},
+ {e:-90,t:'#16205a',b:'#2a3170',a:.86,br:.62,sa:.6,se:0},
+ {e:-13,t:'#16205a',b:'#2a3170',a:.86,br:.62,sa:.6,se:0},
  {e:-7, t:'#20286a',b:'#6a4a7e',a:.82,br:.62,sa:.7, se:0},
  {e:-2, t:'#4a4f9e',b:'#f08a72',a:.62,br:.82,sa:1.05,se:.1},
  {e:2,  t:'#8a8fd0',b:'#ffb37e',a:.5, br:.95,sa:1.15,se:.2},
@@ -880,7 +880,7 @@ function frame(t){
   /* painting inside: eye up-left, slowly settles and follows the pointer a little */
   const s=(.56+.07*(1-tt))*(.985+.015*Math.sin(t*.0004)),ex=-118+mx*10,ey=-34+my*7;
   art.setAttribute('x',(ex-EX*s).toFixed(1));art.setAttribute('y',(ey-EY*s).toFixed(1));art.setAttribute('width',(AW*s).toFixed(1));art.setAttribute('height',(AH*s).toFixed(1));
-  svg.style.filter=`brightness(${(1-.2*night).toFixed(3)})`;
+  svg.style.filter=`brightness(${(1-.3*night).toFixed(3)})`;
   clock(d,e);
   $('#hint').style.opacity=(1-sm(.02,.1,pS)).toFixed(2);
 }
