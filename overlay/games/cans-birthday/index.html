@@ -13,7 +13,9 @@ html,body{margin:0;height:100%;overflow:hidden;background:#2b2340}
 body{font-family:Fredoka,"Trebuchet MS",Arial,sans-serif;color:var(--ink);user-select:none;-webkit-user-select:none;touch-action:none}
 button{font-family:inherit;color:inherit;cursor:pointer;touch-action:none}
 img{-webkit-user-drag:none;user-select:none}
-#stage{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:hidden;background:#fdf6ec}
+#rotate{position:fixed;left:0;right:0;top:0;padding:10px 16px;text-align:center;color:#fff;font:600 15px Fredoka,sans-serif;display:none}
+@media (orientation:portrait) and (max-width:820px){#rotate{display:block}}
+#stage{position:fixed;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:hidden;background:#fdf6ec}
 #top{position:absolute;left:0;top:0;right:0;height:88px;display:flex;align-items:center;gap:12px;padding:0 22px;border-bottom:3px solid var(--line);background:#fffaf2;z-index:20}
 #top h1{margin:0 18px 0 6px;font-size:32px;white-space:nowrap}
 .ibtn{width:56px;height:56px;border-radius:50%;border:3px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;padding:0;color:var(--ink);text-decoration:none;flex:none}
@@ -182,6 +184,7 @@ img{-webkit-user-drag:none;user-select:none}
 </style>
 </head>
 <body>
+<div id="rotate">Turn your phone sideways to play</div>
 <div id="stage">
   <div id="top">
     <a class="ibtn" href="../../" title="Back to Joy of English" id="homeBtn"></a>
@@ -252,7 +255,7 @@ const IC = {
 
 /* ------------------------------------------------------------ fit + sound */
 let scale = 1, soundOn = true;
-function fit() { const w = innerWidth, h = innerHeight; scale = Math.min(w / 1600, h / 900); const st = $("stage"); st.style.transform = `scale(${scale})`; st.style.left = (w - 1600 * scale) / 2 + "px"; st.style.top = (h - 900 * scale) / 2 + "px"; }
+function fit() { const vv = window.visualViewport, w = document.documentElement.clientWidth || innerWidth, h = document.documentElement.clientHeight || innerHeight; scale = Math.min(w / 1600, h / 900); const st = $("stage"); st.style.transform = `scale(${scale})`; st.style.left = (w - 1600 * scale) / 2 + "px"; st.style.top = (h - 900 * scale) / 2 + "px"; }
 addEventListener("resize", fit); fit();
 let ac = null;
 function audioCtx() { if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } if (ac && ac.state === "suspended") ac.resume(); return ac; }

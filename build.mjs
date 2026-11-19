@@ -21,6 +21,8 @@ for (const f of FILES) {
   const r = await fetch(url, { cache: 'no-store' }); if (!r.ok) throw new Error(url + ' ' + r.status);
   let buf = Buffer.from(await r.arrayBuffer());
   if (!f.startsWith('games/school-race/')) { let s = buf.toString('utf8'); for (const [a, b] of EN) s = s.split(a).join(b); buf = Buffer.from(s, 'utf8'); }
+  // phones: a fixed stage never widens the page, so these games get the phone's real width and scale into view
+  if (['games/off-to-school/index.html','games/number-pop/index.html','games/feed-the-caterpillar/index.html'].includes(f)) buf = Buffer.from(buf.toString('utf8').replace('#stage{position:absolute;', '#stage{position:fixed;'), 'utf8');
   fs.mkdirSync(path.dirname(path.join(SITE, f)), { recursive: true }); fs.writeFileSync(path.join(SITE, f), buf);
   console.log('live  ', f, sha1(buf).slice(0, 10));
 }
